@@ -6,13 +6,12 @@ import Popup from "../PopUp";
 
 const ProductsList = ({ className }) => {
   const [isShowDetail, setIsShowDetail] = useState(false);
+  const showProductDetail = () => {
+    setIsShowDetail(true);
+  };
 
   const onCloseHandler = () => {
     setIsShowDetail(false);
-  };
-
-  const showProductDetail = () => {
-    setIsShowDetail(true);
   };
 
   const [products] = useFetchApi();

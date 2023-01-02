@@ -9,7 +9,7 @@ function ProductsItem(props) {
   };
   return (
     <ItemWrapper>
-      <Link to={"/shop"}>
+      <Link>
         <div>
           <div className="product-image">
             <div
