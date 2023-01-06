@@ -1,30 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useFetchApi } from "../hooks/fetchApi";
 import Popup from "../PopUp";
 import ProductsItem from "./ProductsItem";
 
 function TrendingProducts() {
+  //lấy giá trị isShowDetail từ store
+  const isShow = useSelector((state) => state.modal.isShowDetail);
+
+  //fetch api để lấy giá trị products
   const [products] = useFetchApi();
-  const [isShowDetail, setIsShowDetail] = useState(false);
-  const showProductDetail = () => {
-    setIsShowDetail(true);
-  };
 
-  const onCloseHandler = () => {
-    setIsShowDetail(false);
-  };
-
-  if (products.length > 0) {
-    console.log(products[0].price);
-  }
   return (
     <ProductsWrapper>
       <p>MADE THE HARD WAY</p>
       <h3>TOP TRENDING PRODUCTS</h3>
-      {isShowDetail ? (
-        <Popup closeHandler={onCloseHandler} closePopup={onCloseHandler} />
-      ) : null}
+      {isShow ? <Popup /> : null}
       <div className="products">
         {products.length > 0
           ? products.map((item) => (
@@ -34,7 +26,6 @@ function TrendingProducts() {
                 imgUrl={item.img1}
                 productName={item.name}
                 price={item.price}
-                showDetail={showProductDetail}
               />
             ))
           : ""}

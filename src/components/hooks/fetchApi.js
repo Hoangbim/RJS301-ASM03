@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useFetchApi = () => {
   const [data, setData] = useState([]);
@@ -21,11 +21,3 @@ export const useFetchApi = () => {
 
   return [data];
 };
-
-const num = 123456789;
-
-console.log(String(num).replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-
-// for (let i = num.length; (i = 0); i = i - 3) {
-
-// }

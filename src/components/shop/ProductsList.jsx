@@ -1,25 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import ProductsItem from "../contents/ProductsItem";
 import { useFetchApi } from "../hooks/fetchApi";
 import Popup from "../PopUp";
 
 const ProductsList = ({ className }) => {
-  const [isShowDetail, setIsShowDetail] = useState(false);
-  const showProductDetail = () => {
-    setIsShowDetail(true);
-  };
+  //lấy giá trị isShowDetail từ store
+  const isShow = useSelector((state) => state.modal.isShowDetail);
 
-  const onCloseHandler = () => {
-    setIsShowDetail(false);
-  };
-
+  //lấy giá trị products từ custom hook
   const [products] = useFetchApi();
   return (
     <div className={className}>
-      {isShowDetail ? (
-        <Popup closeHandler={onCloseHandler} closePopup={onCloseHandler} />
-      ) : null}
+      {isShow ? <Popup /> : null}
       <div>
         <input type="text" placeholder="Enter Search Here" />
         <select name="" id="">
@@ -36,7 +30,6 @@ const ProductsList = ({ className }) => {
                 imgUrl={item.img1}
                 productName={item.name}
                 price={item.price}
-                showDetail={showProductDetail}
               />
             ))
           : ""}

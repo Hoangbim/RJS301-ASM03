@@ -1,21 +1,33 @@
-import React, { Fragment, ReactDOM } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { modalAction } from "../store";
 
 const Modal = (props) => {
+  const currentProduct = useSelector((state) => state.modal.currentProduct);
+  const dispatch = useDispatch();
+  const closePopup = () => {
+    dispatch(modalAction.hideDetail());
+  };
+
   return (
     <ModalWrapper>
-      <h1>Modal</h1>
-      <img src="" alt="Product image" />
+      <img src={currentProduct.img1} alt="Product" />
       <div className="description">
-        <h3 className="product-name">{props.test}</h3>
-        <p className="product-price"></p>
-        <p className="product-description"></p>
+        <button onClick={closePopup} className="close-popup">
+          X
+        </button>
+        <h3 className="product-name">{currentProduct.name}</h3>
+        <p className="product-price">{`${currentProduct.price.replace(
+          /\B(?=(\d{3})+(?!\d))/g,
+          ","
+        )} VND`}</p>
+        <p className="product-description">{currentProduct.short_desc}</p>
         <button>
           <i className="fa-solid fa-cart-shopping"></i> View Detail
         </button>
       </div>
-      <button onClick={props.closePopup}>X</button>
     </ModalWrapper>
   );
 };
@@ -27,7 +39,8 @@ const Overlay = (props) => {
 const Popup = (props) => {
   return createPortal(
     <Fragment>
-      <Modal test={props.test} closePopup={props.closePopup} /> <Overlay />
+      <Modal />
+      <Overlay />
     </Fragment>,
     document.getElementById("popup")
   );
@@ -36,6 +49,7 @@ const Popup = (props) => {
 export default Popup;
 
 const ModalWrapper = styled.div`
+  display: flex;
   width: 700px;
   height: 450px;
   background-color: var(--color-content_background);
@@ -43,6 +57,25 @@ const ModalWrapper = styled.div`
   top: 25%;
   left: 25%;
   z-index: 10;
+
+  .description {
+    display: flex;
+    flex-direction: column;
+  }
+
+  img {
+    height: 100%;
+    width: 50%;
+  }
+
+  .close-popup {
+    width: 40px;
+    float: right;
+    position: absolute;
+    right: 2px;
+
+    top: 2px;
+  }
 `;
 
 const OverlayWrapper = styled.div`

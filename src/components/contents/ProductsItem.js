@@ -1,11 +1,22 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useFetchApi } from "../hooks/fetchApi";
+import { modalAction } from "../../store";
 
 function ProductsItem(props) {
+  const [products] = useFetchApi();
+  const dispatch = useDispatch();
   const showProductDetail = (e) => {
-    props.showDetail();
-    console.log(e.target);
+    dispatch(modalAction.showDetail());
+
+    let curProduct;
+    if (products.length > 0) {
+      [curProduct] = products.filter((item) => item._id.$oid === e.target.id);
+      console.log(products, curProduct);
+      dispatch(modalAction.setCurrent(curProduct));
+    }
   };
   return (
     <ItemWrapper>
