@@ -24,7 +24,7 @@ const Modal = (props) => {
           ","
         )} VND`}</p>
         <p className="product-description">{currentProduct.short_desc}</p>
-        <button>
+        <button className="btn-detail">
           <i className="fa-solid fa-cart-shopping"></i> View Detail
         </button>
       </div>
@@ -50,22 +50,32 @@ export default Popup;
 
 const ModalWrapper = styled.div`
   display: flex;
-  width: 700px;
-  height: 450px;
+  width: 800px;
+  height: 650px;
   background-color: var(--color-content_background);
   position: fixed;
-  top: 25%;
+  top: 20%;
   left: 25%;
   z-index: 10;
 
   .description {
     display: flex;
     flex-direction: column;
+    padding: 0 10px;
+  }
+  .btn-detail {
+    width: 70%;
+    height: 30px;
+    background-color: var(--color-footer_background);
+    color: var(--color-background);
+    margin: auto;
   }
 
   img {
-    height: 100%;
+    height: auto;
     width: 50%;
+    margin: auto;
+    padding: 0 10px;
   }
 
   .close-popup {
