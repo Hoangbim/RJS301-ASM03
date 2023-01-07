@@ -1,12 +1,13 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useFetchApi } from "../hooks/fetchApi";
+
 import { modalAction } from "../../store";
+import { productAction } from "../../store";
 
 function ProductsItem(props) {
-  const [products] = useFetchApi();
+  const products = useSelector((state) => state.product.initProducts);
   const dispatch = useDispatch();
   const showProductDetail = (e) => {
     dispatch(modalAction.showDetail());
@@ -15,7 +16,7 @@ function ProductsItem(props) {
     if (products.length > 0) {
       [curProduct] = products.filter((item) => item._id.$oid === e.target.id);
       console.log(products, curProduct);
-      dispatch(modalAction.setCurrent(curProduct));
+      dispatch(productAction.setCurrent(curProduct));
     }
   };
   return (

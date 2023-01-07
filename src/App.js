@@ -7,9 +7,11 @@ import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import { useFetchApi } from "./components/hooks/fetchApi";
 //mk realme c2 : 123123
 
 function App() {
+  useFetchApi();
   return (
     <div className="App">
       <Routes>

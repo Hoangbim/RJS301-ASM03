@@ -4,8 +4,9 @@ import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { modalAction } from "../store";
 
-const Modal = (props) => {
-  const currentProduct = useSelector((state) => state.modal.currentProduct);
+const Modal = () => {
+  const currentProduct = useSelector((state) => state.product.currentProduct);
+  console.log(currentProduct);
   const dispatch = useDispatch();
   const closePopup = () => {
     dispatch(modalAction.hideDetail());
@@ -32,11 +33,11 @@ const Modal = (props) => {
   );
 };
 
-const Overlay = (props) => {
+const Overlay = () => {
   return <OverlayWrapper></OverlayWrapper>;
 };
 
-const Popup = (props) => {
+const Popup = () => {
   return createPortal(
     <Fragment>
       <Modal />
@@ -51,10 +52,10 @@ export default Popup;
 const ModalWrapper = styled.div`
   display: flex;
   width: 800px;
-  height: 650px;
+  height: 600px;
   background-color: var(--color-content_background);
   position: fixed;
-  top: 20%;
+  top: 15%;
   left: 25%;
   z-index: 10;
 
@@ -94,5 +95,5 @@ const OverlayWrapper = styled.div`
   position: fixed;
   z-index: 9;
   background-color: black;
-  opacity: 0.2;
+  opacity: 0.3;
 `;

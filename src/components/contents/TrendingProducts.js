@@ -10,7 +10,7 @@ function TrendingProducts() {
   const isShow = useSelector((state) => state.modal.isShowDetail);
 
   //fetch api để lấy giá trị products
-  const [products] = useFetchApi();
+  const products = useSelector((state) => state.product.initProducts);
 
   return (
     <ProductsWrapper>

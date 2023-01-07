@@ -2,15 +2,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import ProductsItem from "../contents/ProductsItem";
-import { useFetchApi } from "../hooks/fetchApi";
+
 import Popup from "../PopUp";
 
 const ProductsList = ({ className }) => {
-  //lấy giá trị isShowDetail từ store
+  //lấy các gía trị từ store
   const isShow = useSelector((state) => state.modal.isShowDetail);
+  const isInit = useSelector((state) => state.product.isInit);
+  const products = useSelector((state) => state.product.initProducts);
+  const filterProducts = useSelector((state) => state.product.filterProducts);
 
-  //lấy giá trị products từ custom hook
-  const [products] = useFetchApi();
+  //tạo biến nhận giá trị của list product, khi khởi chạy thì biến có giá trị là tất cả các products.
+  const renderProducts = isInit ? products : filterProducts;
   return (
     <div className={className}>
       {isShow ? <Popup /> : null}
@@ -22,8 +25,8 @@ const ProductsList = ({ className }) => {
       </div>
 
       <div className="products">
-        {products.length > 0
-          ? products.map((item) => (
+        {renderProducts.length > 0
+          ? renderProducts.map((item) => (
               <ProductsItem
                 key={item._id.$oid}
                 id={item._id.$oid}
