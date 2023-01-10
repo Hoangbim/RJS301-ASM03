@@ -1,17 +1,28 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { modalAction } from "../../store";
-import { productAction } from "../../store";
+import { modalAction } from '../../store';
+import { productAction } from '../../store';
 
 function ProductsItem(props) {
+  //lấy giá trị từ store
   const products = useSelector((state) => state.product.initProducts);
+  const isShopPage = useSelector((state) => state.modal.isShopPage);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const showProductDetail = (e) => {
-    dispatch(modalAction.showDetail());
+    console.log('Go to detail!', e.target.id);
 
+    //khi ở không phải ở shopPage thì hiện thị popUp
+    if (!isShopPage) {
+      dispatch(modalAction.showDetail());
+    }
+    //khi ở shopPage thì chuyển hướng đến trang detail
+    if (isShopPage) {
+      navigate(`/detail/${e.target.id}`, { replace: false });
+    }
     let curProduct;
     if (products.length > 0) {
       [curProduct] = products.filter((item) => item._id.$oid === e.target.id);
@@ -21,20 +32,18 @@ function ProductsItem(props) {
   };
   return (
     <ItemWrapper>
-      <Link>
-        <div>
-          <div className="product-image">
-            <div
-              className="overlay"
-              onClick={showProductDetail}
-              id={props.id}
-            ></div>
-            <img src={props.imgUrl} alt="Product" />
-          </div>
-          <p className="product-name">{props.productName}</p>
-          <p>{props.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+      <div>
+        <div className="product-image">
+          <div
+            className="overlay"
+            onClick={showProductDetail}
+            id={props.id}
+          ></div>
+          <img src={props.imgUrl} alt="Product" />
         </div>
-      </Link>
+        <p className="product-name">{props.productName}</p>
+        <p>{props.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+      </div>
     </ItemWrapper>
   );
 }

@@ -1,8 +1,8 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import { useFetchApi } from "../hooks/fetchApi";
-import { productAction } from "../../store";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+import { productAction } from '../../store';
 
 const CategogiesSideBar = () => {
   //nhận data về products
@@ -16,15 +16,15 @@ const CategogiesSideBar = () => {
     console.log(e.target.classList[0]);
 
     //khoanh vùng event click, ngăn click sang tiêu đề hoặc phần khác gây ra lỗi
-    if (e.target.classList[0] === "row") {
+    if (e.target.classList[0] === 'row') {
       //lọc product theo giá trị click, khi all thì hiện tất cả
       const filterProducts =
-        type === "all"
+        type === 'all'
           ? products
           : products.filter((item) => item.category === type);
 
       //đặt giá trị filtedProducts vào store
-      dispatch(productAction.clicked());
+      dispatch(productAction.shopPageClicked());
       dispatch(productAction.setFilterProduct(filterProducts));
     }
   };

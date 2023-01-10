@@ -1,7 +1,8 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 const initialModalState = {
   isShowDetail: false,
+  isShopPage: false,
 };
 
 const initialProductState = {
@@ -12,13 +13,13 @@ const initialProductState = {
 };
 
 const productSlice = createSlice({
-  name: "product",
+  name: 'product',
   initialState: initialProductState,
   reducers: {
-    clicked(state) {
+    shopPageClicked(state) {
       state.isInit = false;
     },
-    init(state) {
+    shopPageInit(state) {
       state.isInit = true;
     },
     setInit(state, actions) {
@@ -35,16 +36,22 @@ const productSlice = createSlice({
 });
 
 const modalSlice = createSlice({
-  name: "modal",
+  name: 'modal',
   initialState: initialModalState,
   reducers: {
     showDetail(state) {
       state.isShowDetail = true;
-      console.log("show modal");
+      console.log('show modal');
     },
     hideDetail(state) {
       state.isShowDetail = false;
-      console.log("hide modal");
+      console.log('hide modal');
+    },
+    setShopPage(state) {
+      state.isShopPage = true;
+    },
+    setHomePage(state) {
+      state.isShopPage = false;
     },
   },
 });

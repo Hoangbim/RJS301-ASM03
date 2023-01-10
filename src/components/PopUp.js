@@ -1,14 +1,20 @@
-import React, { Fragment } from "react";
-import styled from "styled-components";
-import { createPortal } from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { modalAction } from "../store";
+import React, { Fragment } from 'react';
+import styled from 'styled-components';
+import { createPortal } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { modalAction } from '../store';
+import { useNavigate } from 'react-router-dom';
 
 const Modal = () => {
+  const navigate = useNavigate();
   const currentProduct = useSelector((state) => state.product.currentProduct);
   console.log(currentProduct);
   const dispatch = useDispatch();
   const closePopup = () => {
+    dispatch(modalAction.hideDetail());
+  };
+  const viewDetail = (e) => {
+    navigate(`/detail/${currentProduct._id.$oid}`, { replace: false });
     dispatch(modalAction.hideDetail());
   };
 
@@ -22,10 +28,10 @@ const Modal = () => {
         <h3 className="product-name">{currentProduct.name}</h3>
         <p className="product-price">{`${currentProduct.price.replace(
           /\B(?=(\d{3})+(?!\d))/g,
-          ","
+          ','
         )} VND`}</p>
         <p className="product-description">{currentProduct.short_desc}</p>
-        <button className="btn-detail">
+        <button className="btn-detail" onClick={viewDetail}>
           <i className="fa-solid fa-cart-shopping"></i> View Detail
         </button>
       </div>
@@ -43,7 +49,7 @@ const Popup = () => {
       <Modal />
       <Overlay />
     </Fragment>,
-    document.getElementById("popup")
+    document.getElementById('popup')
   );
 };
 

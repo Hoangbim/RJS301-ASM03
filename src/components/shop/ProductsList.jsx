@@ -14,6 +14,7 @@ const ProductsList = ({ className }) => {
 
   //tạo biến nhận giá trị của list product, khi khởi chạy thì biến có giá trị là tất cả các products.
   const renderProducts = isInit ? products : filterProducts;
+
   return (
     <div className={className}>
       {isShow ? <Popup /> : null}

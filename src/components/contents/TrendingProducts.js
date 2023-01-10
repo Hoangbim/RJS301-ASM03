@@ -1,16 +1,24 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { useFetchApi } from "../hooks/fetchApi";
-import Popup from "../PopUp";
-import ProductsItem from "./ProductsItem";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+
+import Popup from '../PopUp';
+import ProductsItem from './ProductsItem';
 
 function TrendingProducts() {
   //lấy giá trị isShowDetail từ store
   const isShow = useSelector((state) => state.modal.isShowDetail);
 
-  //fetch api để lấy giá trị products
+  //lấy  giá trị products từ store
   const products = useSelector((state) => state.product.initProducts);
+  //lấy 8 sản phẩm đầu tiên của kết quả fetchApi
+  let trendingProducts = [];
+
+  for (let i = 0; i <= 7; i++) {
+    if (products.length > 0) trendingProducts.push(products[i]);
+  }
+
+  console.log(products, trendingProducts);
 
   return (
     <ProductsWrapper>
@@ -18,8 +26,8 @@ function TrendingProducts() {
       <h3>TOP TRENDING PRODUCTS</h3>
       {isShow ? <Popup /> : null}
       <div className="products">
-        {products.length > 0
-          ? products.map((item) => (
+        {trendingProducts.length > 0
+          ? trendingProducts.map((item) => (
               <ProductsItem
                 key={item._id.$oid}
                 id={item._id.$oid}
@@ -28,7 +36,7 @@ function TrendingProducts() {
                 price={item.price}
               />
             ))
-          : ""}
+          : ''}
       </div>
     </ProductsWrapper>
   );
