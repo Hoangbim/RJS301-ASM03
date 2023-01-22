@@ -10,7 +10,7 @@ function DetailPage() {
   //đặt giá trị trang hiện tại
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(modalAction.setHomePage());
+    dispatch(modalAction.setShopPage());
   }, []);
   //nhận giá trị product hiện tại
   const currentProduct = useSelector((state) => state.product.currentProduct);

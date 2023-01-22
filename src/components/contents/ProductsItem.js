@@ -58,6 +58,22 @@ const ItemWrapper = styled.div`
   text-align: center;
   margin: 20px 0 0 0;
   
+  animation-name: appear;
+  animation-duration: 1.5s;
+  
+
+  @keyframes appear {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    90% { opacity: 0.6}
+    100% {transform: scale(1);
+    opacity: 1;}
+  };
+
+
+  
 
   a {
     text-decoration: none;
