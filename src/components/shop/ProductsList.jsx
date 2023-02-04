@@ -1,9 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import ProductsItem from "../contents/ProductsItem";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ProductsItem from '../contents/ProductsItem';
 
-import Popup from "../PopUp";
+import Popup from '../PopUp';
 
 const ProductsList = ({ className }) => {
   //lấy các gía trị từ store
@@ -36,16 +36,16 @@ const ProductsList = ({ className }) => {
                 price={item.price}
               />
             ))
-          : ""}
+          : ''}
       </div>
 
       <div className="page-button">
         <p className="back-button">
-          <i className="fa-regular fa-backward-step"></i>
+          <i class="fa-solid fa-caret-left"></i>
         </p>
         <p>1</p>
         <p className="forward-button">
-          <i className="fa-regular fa-backward-step"></i>
+          <i class="fa-solid fa-caret-right"></i>
         </p>
       </div>
     </div>

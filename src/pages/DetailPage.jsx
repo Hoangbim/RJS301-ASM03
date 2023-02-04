@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ProductsItem from '../components/contents/ProductsItem';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import { modalAction } from '../store';
+import { cartAction, modalAction } from '../store';
 
 function DetailPage() {
   //đặt giá trị trang hiện tại
@@ -17,15 +17,48 @@ function DetailPage() {
 
   //nếu để state này điều khiển việc hiển thị của ảnh zoomed thì khi click vào sản phẩm ở related ảnh sẽ không thay đổi!!!! cho nên thử đưa biêns này vào store, và khi setCurrentProduct cũng set lại luôn biến này !!
   const [zoomedImage, setZoomedImage] = useState(currentProduct.img1);
+  const [count, setCount] = useState(1);
   const products = useSelector((state) => state.product.initProducts);
-  console.log(products);
+  const carts = useSelector((state) => state.cart.carts);
   const filtedProducts = products.filter(
     (item) => item.category === currentProduct.category
   );
-  console.log(filtedProducts);
+
   const setImage = (e) => {
-    console.log(currentProduct);
     setZoomedImage(e.target.src);
+  };
+
+  //reset lại số lượng sản phẩm
+  const resetQuantity = (e) => {
+    console.log('product', e.target.id);
+    if (e.target.id) {
+      setCount(1);
+    }
+  };
+
+  const decrement = () => {
+    // setCount(count - 1);
+    setCount((prev) => prev - 1);
+  };
+
+  const increment = () => {
+    // setCount(count + 1);
+
+    setCount((prev) => {
+      return prev + 1;
+    });
+  };
+
+  const addToCart = () => {
+    const cart = {
+      image: currentProduct.img1,
+      name: currentProduct.name,
+      price: currentProduct.price,
+      quantity: count,
+    };
+    console.log(cart, carts);
+
+    dispatch(cartAction.addToCart(cart));
   };
 
   return (
@@ -43,12 +76,21 @@ function DetailPage() {
             <img src={zoomedImage} alt="" />
           </div>
           <div className="infomation">
-            <h3>{currentProduct.name}</h3>
+            <h2>{currentProduct.name}</h2>
             <p className="price"> {currentProduct.price}</p>
             <p className="short-desc">{currentProduct.short_desc}</p>
-            <h6>
+            <h4>
               CATEGORY: <span>{currentProduct.category}</span>
-            </h6>
+            </h4>
+            <div className="add-cart">
+              <p>QUANTITY</p>
+              <p>
+                <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
+                {count}{' '}
+                <i class="fa-solid fa-caret-right" onClick={increment}></i>
+              </p>
+              <button onClick={addToCart}>Add to cart</button>
+            </div>
           </div>
         </div>
         <div className="product-description">
@@ -57,7 +99,7 @@ function DetailPage() {
           <p>{currentProduct.long_desc}</p>
         </div>
         <p>RELATED PRODUCTS</p>
-        <div className="related-products">
+        <div className="related-products" onClick={resetQuantity}>
           {/* {filtedProducts.map((item) => (
             <div className="related-item" key={item._id.$oid}>
               <img src={item.img1} alt="iphone" />
@@ -113,7 +155,11 @@ const ProductDetailWrapper = styled.div`
     width: 48%;
     text-align: left;
     padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
+
   .product-description {
     // width: 60%;
     text-align: left;
@@ -131,6 +177,15 @@ const ProductDetailWrapper = styled.div`
     img {
       width: 100%;
       height: auto;
+    }
+  }
+
+  .add-cart {
+    display: flex;
+    width: 40%;
+    // justify-content: space-between;
+    input {
+      width: 40px;
     }
   }
 `;

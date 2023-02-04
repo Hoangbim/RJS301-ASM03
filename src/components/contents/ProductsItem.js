@@ -26,7 +26,7 @@ function ProductsItem(props) {
     let curProduct;
     if (products.length > 0) {
       [curProduct] = products.filter((item) => item._id.$oid === e.target.id);
-      console.log(products, curProduct);
+
       dispatch(productAction.setCurrent(curProduct));
     }
   };
