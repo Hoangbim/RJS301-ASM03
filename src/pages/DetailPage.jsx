@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import ProductsItem from '../components/contents/ProductsItem';
-import Footer from '../components/layout/Footer';
-import NavBar from '../components/layout/NavBar';
-import { cartAction, modalAction } from '../store';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import ProductsItem from "../components/contents/ProductsItem";
+import Footer from "../components/layout/Footer";
+import NavBar from "../components/layout/NavBar";
+import { cartAction, modalAction } from "../store";
 
 function DetailPage() {
   //đặt giá trị trang hiện tại
@@ -16,7 +16,11 @@ function DetailPage() {
   const currentProduct = useSelector((state) => state.product.currentProduct);
 
   //nếu để state này điều khiển việc hiển thị của ảnh zoomed thì khi click vào sản phẩm ở related ảnh sẽ không thay đổi!!!! cho nên thử đưa biêns này vào store, và khi setCurrentProduct cũng set lại luôn biến này !!
-  const [zoomedImage, setZoomedImage] = useState(currentProduct.img1);
+  const [zoomedImage, setZoomedImage] = useState("");
+  //đặt giá trị zoomedImage khi current product thay đổi
+  useEffect(() => {
+    setZoomedImage(currentProduct.img1);
+  }, [currentProduct]);
   const [count, setCount] = useState(1);
   const products = useSelector((state) => state.product.initProducts);
   const carts = useSelector((state) => state.cart.carts);
@@ -30,7 +34,7 @@ function DetailPage() {
 
   //reset lại số lượng sản phẩm
   const resetQuantity = (e) => {
-    console.log('product', e.target.id);
+    console.log("product", e.target.id);
     if (e.target.id) {
       setCount(1);
     }
@@ -85,8 +89,8 @@ function DetailPage() {
             <div className="add-cart">
               <p>QUANTITY</p>
               <p>
-                <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
-                {count}{' '}
+                <i class="fa-solid fa-caret-left" onClick={decrement}></i>{" "}
+                {count}{" "}
                 <i class="fa-solid fa-caret-right" onClick={increment}></i>
               </p>
               <button onClick={addToCart}>Add to cart</button>
@@ -118,7 +122,7 @@ function DetailPage() {
                   price={item.price}
                 />
               ))
-            : ''}
+            : ""}
         </div>
       </ProductDetailWrapper>
       <Footer />

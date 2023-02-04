@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, current } from "@reduxjs/toolkit";
 
 const initialModalState = {
   isShowDetail: false,
@@ -15,17 +15,20 @@ const initialProductState = {
 const initialUserArr = [];
 
 const initialCartsArr = {
-  user: 'hoang',
+  user: "hoang",
   carts: [],
 };
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: initialCartsArr,
   reducers: {
     addToCart(state, actions) {
       if (state.carts.length === 0) {
-        console.log('giỏ hàng trống, thêm sản phẩm vào giỏ');
+        console.log(
+          "giỏ hàng trống, thêm sản phẩm vào giỏ",
+          current(state.carts)
+        );
         state.carts = [...state.carts, actions.payload];
       } else {
         // // console.log('carts đã có sản phẩm');
@@ -53,14 +56,6 @@ const cartSlice = createSlice({
           if (state.carts[i].name === actions.payload.name) {
             state.carts[i].quantity += actions.payload.quantity;
             check = true;
-            console.log(
-              'exist, update quantity',
-              state.carts[i].quantity,
-              actions.payload.quantity,
-              //tại sao log ở ngay index.js thì state.carts lạii là proxy???
-
-              state.carts
-            );
           }
         }
         if (!check) {
@@ -92,7 +87,7 @@ const cartSlice = createSlice({
 });
 
 const productSlice = createSlice({
-  name: 'product',
+  name: "product",
   initialState: initialProductState,
   reducers: {
     shopPageClicked(state) {
@@ -115,16 +110,16 @@ const productSlice = createSlice({
 });
 
 const modalSlice = createSlice({
-  name: 'modal',
+  name: "modal",
   initialState: initialModalState,
   reducers: {
     showDetail(state) {
       state.isShowDetail = true;
-      console.log('show modal');
+      console.log("show modal");
     },
     hideDetail(state) {
       state.isShowDetail = false;
-      console.log('hide modal');
+      console.log("hide modal");
     },
     setShopPage(state) {
       state.isShopPage = true;
