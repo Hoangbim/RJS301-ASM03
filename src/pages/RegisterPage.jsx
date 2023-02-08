@@ -17,6 +17,7 @@ function RegisterPage() {
         <h3 className="sign-up">Sign Up</h3>
         <input
           type="text"
+          name="fullName"
           className="input name-input"
           placeholder="Full name"
           onChange={nameChangeHandler}
@@ -24,10 +25,16 @@ function RegisterPage() {
         <input type="text" className="input email-input" placeholder="Email" />
         <input
           type="password"
+          name="password"
           className="input pass-input"
           placeholder="Password"
         />
-        <input type="text" className="input phone-input" placeholder="Phone" />
+        <input
+          type="text"
+          name="phone"
+          className="input phone-input"
+          placeholder="Phone"
+        />
         <button className="signup-btn">SIGN UP</button>
         <p className="link-to__login">
           Login? <Link to={'/login'}>Click</Link>

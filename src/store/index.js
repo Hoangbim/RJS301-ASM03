@@ -1,4 +1,4 @@
-import { configureStore, createSlice, current } from "@reduxjs/toolkit";
+import { configureStore, createSlice, current } from '@reduxjs/toolkit';
 
 const initialModalState = {
   isShowDetail: false,
@@ -15,18 +15,23 @@ const initialProductState = {
 const initialUserArr = [];
 
 const initialCartsArr = {
-  user: "hoang",
+  user: 'hoang',
+
   carts: [],
 };
 
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState: initialCartsArr,
   reducers: {
+    updateCurrentUser(state, actions) {
+      state.user = actions.payload;
+    },
+
     addToCart(state, actions) {
       if (state.carts.length === 0) {
         console.log(
-          "giỏ hàng trống, thêm sản phẩm vào giỏ",
+          'giỏ hàng trống, thêm sản phẩm vào giỏ',
           current(state.carts)
         );
         state.carts = [...state.carts, actions.payload];
@@ -87,7 +92,7 @@ const cartSlice = createSlice({
 });
 
 const productSlice = createSlice({
-  name: "product",
+  name: 'product',
   initialState: initialProductState,
   reducers: {
     shopPageClicked(state) {
@@ -110,16 +115,16 @@ const productSlice = createSlice({
 });
 
 const modalSlice = createSlice({
-  name: "modal",
+  name: 'modal',
   initialState: initialModalState,
   reducers: {
     showDetail(state) {
       state.isShowDetail = true;
-      console.log("show modal");
+      console.log('show modal');
     },
     hideDetail(state) {
       state.isShowDetail = false;
-      console.log("hide modal");
+      console.log('hide modal');
     },
     setShopPage(state) {
       state.isShopPage = true;
