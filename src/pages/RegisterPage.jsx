@@ -1,45 +1,158 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import { Form, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userAction } from '../store';
 function RegisterPage() {
-  const nameChangeHandler = (e) => {
-    console.log(e.target.value);
+  const dispatch = useDispatch();
+  const userArr = useSelector((state) => state.user);
+  const [inputs, setInputs] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    phone: '',
+  });
+
+  const [errors, setErrors] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    phone: '',
+  });
+
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  //validate form đăng ký
+  const validateInputs = (name, value) => {
+    switch (name) {
+      case 'fullName':
+        setErrors({
+          ...errors,
+          fullName: !value.trim().includes(' ')
+            ? 'Điền họ tên đầy đủ của bạn!'
+            : '',
+        });
+        break;
+      case 'email':
+        setErrors({
+          ...errors,
+          email:
+            !value.includes('@') || !value.includes('.')
+              ? 'Email không hợp lệ'
+              : '',
+        });
+        break;
+      case 'password':
+        setErrors({
+          ...errors,
+          password: value.length < 8 ? 'Mật khẩu phải có ít nhất 8 ký tự' : '',
+        });
+        break;
+
+      case 'phone':
+        setErrors({
+          ...errors,
+          phone:
+            isNaN(value) || !value[0] === '+'
+              ? 'Số điện thoại chưa hợp lệ'
+              : '',
+        });
+    }
   };
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    validateInputs(name, value);
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+
+    console.log(userArr);
+
+    //kiểm tra validate thành công và tất cả các trường input đã được nhập thì mới chuyển trạng thái của form sang valid
+    if (
+      Object.values(errors).every((err) => err === '') &&
+      Object.values(inputs).every((inp) => inp !== '')
+    ) {
+      setFormIsValid(() => true);
+    } else {
+      setFormIsValid(() => false);
+    }
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(userAction.addUser(inputs));
+    console.log(inputs, errors);
+    setInputs({
+      fullName: '',
+      email: '',
+      password: '',
+      phone: '',
+    });
+    setErrors({
+      fullName: '',
+      email: '',
+      password: '',
+      phone: '',
+    });
+    setFormIsValid(false);
+  };
+
   return (
     <RegisterWrapper backgroundImg="images/banner1.jpg">
       <NavBar />
       {/* <img src="./images/banner1.jpg" alt="" />
       <img src="./images/banner1.jpg" alt="" />
       <Footer /> */}
-      <div className="register-form">
+      <form className="register-form" onSubmit={submitHandler}>
         <h3 className="sign-up">Sign Up</h3>
         <input
           type="text"
           name="fullName"
           className="input name-input"
+          value={inputs.fullName}
           placeholder="Full name"
-          onChange={nameChangeHandler}
-        />{' '}
-        <input type="text" className="input email-input" placeholder="Email" />
+          onChange={changeHandler}
+        />
+        {errors.fullName && <p className="error">{errors.fullName}</p>}
+        <input
+          type="text"
+          name="email"
+          className="input email-input"
+          value={inputs.email}
+          placeholder="Email"
+          onChange={changeHandler}
+        />
+        {errors.email && <p className="error">{errors.email}</p>}
         <input
           type="password"
           name="password"
           className="input pass-input"
+          value={inputs.password}
           placeholder="Password"
+          onChange={changeHandler}
         />
+        {errors.password && <p className="error">{errors.password}</p>}
         <input
           type="text"
           name="phone"
           className="input phone-input"
+          value={inputs.phone}
           placeholder="Phone"
+          onChange={changeHandler}
         />
-        <button className="signup-btn">SIGN UP</button>
-        <p className="link-to__login">
-          Login? <Link to={'/login'}>Click</Link>
-        </p>
-      </div>
+        {errors.phone && <p className="error">{errors.phone}</p>}
+        <button className="signup-btn" disabled={!formIsValid}>
+          SIGN UP
+        </button>
+      </form>
+      <p className="link-to__login">
+        Login? <Link to={'/login'}>Click</Link>
+      </p>
       <Footer />
     </RegisterWrapper>
   );

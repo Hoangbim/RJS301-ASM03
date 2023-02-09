@@ -12,13 +12,30 @@ const initialProductState = {
   filterProducts: [],
 };
 
-const initialUserArr = [];
+const initialUser = {
+  currentUser: '',
+  userArr: [],
+};
 
 const initialCartsArr = {
   user: 'hoang',
 
   carts: [],
 };
+
+const userSLice = createSlice({
+  name: 'user',
+  initialState: initialUser,
+  reducers: {
+    addUser(state, actions) {
+      state.userArr.push(actions.payload);
+    },
+
+    setCurrentUser(state, actions) {
+      state.currentUser = actions.payload;
+    },
+  },
+});
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -140,11 +157,13 @@ const store = configureStore({
     modal: modalSlice.reducer,
     product: productSlice.reducer,
     cart: cartSlice.reducer,
+    user: userSLice.reducer,
   },
 });
 
 export const modalAction = modalSlice.actions;
 export const productAction = productSlice.actions;
 export const cartAction = cartSlice.actions;
+export const userAction = userSLice.actions;
 
 export default store;
