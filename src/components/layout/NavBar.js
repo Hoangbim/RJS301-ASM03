@@ -1,8 +1,15 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import { userAction } from '../../store';
 
 function NavBar() {
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const logOut = () => {
+    dispatch(userAction.setCurrentUser(''));
+  };
   return (
     <NavbarWraper>
       <div className="navbar-container">
@@ -10,15 +17,15 @@ function NavBar() {
           <NavLink
             to="/"
             className={(navData) => {
-              return navData.isActive ? "active" : "";
+              return navData.isActive ? 'active' : '';
             }}
           >
-            {" "}
+            {' '}
             Home
           </NavLink>
           <NavLink
             className={(navData) => {
-              return navData.isActive ? "active" : "";
+              return navData.isActive ? 'active' : '';
             }}
             to="/shop"
           >
@@ -28,11 +35,20 @@ function NavBar() {
         <h2 className="">BOUTIQUE</h2>
         <div className="buttons right">
           <Link to="/cart">
-            <i className="fa-solid fa-cart-shopping"></i> Cart{" "}
+            <i className="fa-solid fa-cart-shopping"></i> Cart{' '}
           </Link>
-          <Link to={"/login"}>
-            <i className="fa-solid fa-user"></i> Login
-          </Link>
+
+          {currentUser && (
+            <p>
+              <i className="fa-solid fa-user"></i>
+              {currentUser} <span onClick={logOut}>(Log out)</span>
+            </p>
+          )}
+          {!currentUser && (
+            <Link to={'/login'}>
+              <i className="fa-solid fa-user"></i> Login
+            </Link>
+          )}
         </div>
       </div>
     </NavbarWraper>

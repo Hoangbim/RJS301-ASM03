@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
 import { Link, useNavigate } from 'react-router-dom';
-import FormComponent from '../components/FormCoponentGPT';
+import LoginForm from '../components/LoginForm';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -13,23 +13,7 @@ function LoginPage() {
   return (
     <LoginWrapper backgroundImg="images/banner1.jpg">
       <NavBar />
-      {/* <img src="./images/banner1.jpg" alt="" />
-      <img src="./images/banner1.jpg" alt="" />
-      <Footer /> */}
-      {/* <div className="login-form">
-        <h3>Sign Up</h3>
-        <input type="text" className="input name-input" />{' '}
-        <input type="text" className="input email-input" />
-        <input type="password" className="input pass-input" />
-        <input type="text" className="input phone-input" />
-        <button className="signup-btn" onClick={goToSignUpPage}>
-          SIGN UP
-        </button>
-        <p>
-          Login? <Link to={'/login'}></Link>
-        </p>
-      </div> */}
-      <FormComponent />
+      <LoginForm />
       <p>
         Create an account? <Link to={'/register'}>Sign Up</Link>
       </p>

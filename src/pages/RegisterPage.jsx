@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../store';
 function RegisterPage() {
   const dispatch = useDispatch();
   const userArr = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     fullName: '',
     email: '',
@@ -82,11 +83,18 @@ function RegisterPage() {
     }
   };
 
+  //submit form
   const submitHandler = (e) => {
+    //ngăn mặc định
     e.preventDefault();
-
+    //lưu vào store
     dispatch(userAction.addUser(inputs));
+    //thêm user vào mảng userArr
+    userArr.push(inputs);
+    //lưu vào storage
+    localStorage.setItem('USERARR', JSON.stringify(userArr));
     console.log(inputs, errors);
+    //đặt các giá trị về ban đầu
     setInputs({
       fullName: '',
       email: '',
@@ -100,6 +108,8 @@ function RegisterPage() {
       phone: '',
     });
     setFormIsValid(false);
+    //chuyển hướng sang trang login
+    navigate('/login', { replace: false });
   };
 
   return (

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { userAction } from '../store';
 
-const FormComponent = () => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -10,7 +15,7 @@ const FormComponent = () => {
     email: '',
     password: '',
   });
-
+  //validate thông tin đầu vào
   const validateInputs = (name, value) => {
     switch (name) {
       case 'email':
@@ -33,6 +38,7 @@ const FormComponent = () => {
     }
   };
 
+  //xử lý dữ liệu input
   const handleChange = (e) => {
     const { name, value } = e.target;
     validateInputs(name, value);
@@ -43,10 +49,14 @@ const FormComponent = () => {
     });
   };
 
+  //submit dữ liệu
   const handleSubmit = (e) => {
+    //ngăn mặc định
     e.preventDefault();
     if (Object.values(errors).every((err) => err === '')) {
       console.log('Form đã được gửi');
+      dispatch(userAction.setCurrentUser(inputs.email));
+      navigate('/shop', { replace: false });
     } else {
       console.log('Form chưa được gửi');
     }
@@ -78,7 +88,7 @@ const FormComponent = () => {
   );
 };
 
-export default FormComponent;
+export default LoginForm;
 
 const FormWrapper = styled.form`
   width: 50%;
