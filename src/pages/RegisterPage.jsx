@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import Footer from '../components/layout/Footer';
-import NavBar from '../components/layout/NavBar';
-import styled, { createGlobalStyle } from 'styled-components';
-import { Form, Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAction } from '../store';
+import React, { useState } from "react";
+import Footer from "../components/layout/Footer";
+import NavBar from "../components/layout/NavBar";
+import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userAction } from "../store";
 function RegisterPage() {
   const dispatch = useDispatch();
-  const userArr = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    phone: '',
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
   });
 
   const [errors, setErrors] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    phone: '',
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -28,38 +28,41 @@ function RegisterPage() {
   //validate form đăng ký
   const validateInputs = (name, value) => {
     switch (name) {
-      case 'fullName':
+      case "fullName":
         setErrors({
           ...errors,
-          fullName: !value.trim().includes(' ')
-            ? 'Điền họ tên đầy đủ của bạn!'
-            : '',
+          fullName: !value.trim().includes(" ")
+            ? "Điền họ tên đầy đủ của bạn!"
+            : "",
         });
         break;
-      case 'email':
+      case "email":
         setErrors({
           ...errors,
           email:
-            !value.includes('@') || !value.includes('.')
-              ? 'Email không hợp lệ'
-              : '',
+            !value.includes("@") || !value.includes(".")
+              ? "Email không hợp lệ"
+              : "",
         });
         break;
-      case 'password':
+      case "password":
         setErrors({
           ...errors,
-          password: value.length < 8 ? 'Mật khẩu phải có ít nhất 8 ký tự' : '',
+          password: value.length < 8 ? "Mật khẩu phải có ít nhất 8 ký tự" : "",
         });
         break;
 
-      case 'phone':
+      case "phone":
         setErrors({
           ...errors,
           phone:
-            isNaN(value) || !value[0] === '+'
-              ? 'Số điện thoại chưa hợp lệ'
-              : '',
+            isNaN(value) || !value[0] === "+"
+              ? "Số điện thoại chưa hợp lệ"
+              : "",
         });
+        break;
+      default:
+        break;
     }
   };
   const changeHandler = (e) => {
@@ -70,12 +73,10 @@ function RegisterPage() {
       [name]: value,
     });
 
-    console.log(userArr);
-
     //kiểm tra validate thành công và tất cả các trường input đã được nhập thì mới chuyển trạng thái của form sang valid
     if (
-      Object.values(errors).every((err) => err === '') &&
-      Object.values(inputs).every((inp) => inp !== '')
+      Object.values(errors).every((err) => err === "") &&
+      Object.values(inputs).every((inp) => inp !== "")
     ) {
       setFormIsValid(() => true);
     } else {
@@ -87,29 +88,31 @@ function RegisterPage() {
   const submitHandler = (e) => {
     //ngăn mặc định
     e.preventDefault();
-    //lưu vào store
-    dispatch(userAction.addUser(inputs));
-    //thêm user vào mảng userArr
-    userArr.push(inputs);
-    //lưu vào storage
-    localStorage.setItem('USERARR', JSON.stringify(userArr));
-    console.log(inputs, errors);
+    //lấy thông tin người dùng
+
+    const userArr = JSON.parse(localStorage.getItem("USERARR")) || [];
+
+    const newUserArr = [...userArr, inputs];
+    //lưu vào localstorage
+    localStorage.setItem("USERARR", JSON.stringify(newUserArr));
+    console.log(inputs, errors, userArr);
+
     //đặt các giá trị về ban đầu
     setInputs({
-      fullName: '',
-      email: '',
-      password: '',
-      phone: '',
+      fullName: "",
+      email: "",
+      password: "",
+      phone: "",
     });
     setErrors({
-      fullName: '',
-      email: '',
-      password: '',
-      phone: '',
+      fullName: "",
+      email: "",
+      password: "",
+      phone: "",
     });
     setFormIsValid(false);
     //chuyển hướng sang trang login
-    navigate('/login', { replace: false });
+    navigate("/login", { replace: false });
   };
 
   return (
@@ -161,7 +164,7 @@ function RegisterPage() {
         </button>
       </form>
       <p className="link-to__login">
-        Login? <Link to={'/login'}>Click</Link>
+        Login? <Link to={"/login"}>Click</Link>
       </p>
       <Footer />
     </RegisterWrapper>
@@ -174,7 +177,7 @@ const RegisterWrapper = styled.div`
   max-width: 1200px;
   margin: auto;
   // background-image: url('${(props) => props.backgroundImg}');
-  background: url('${(props) => props.backgroundImg}');
+  background: url("${(props) => props.backgroundImg}");
   height: 500px; /* You must set a specified height */
   background-position: center; /* Center the image */
   background-repeat: repeat; /* Do not repeat the image */
