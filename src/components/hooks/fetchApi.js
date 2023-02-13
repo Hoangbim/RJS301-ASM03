@@ -4,6 +4,7 @@ import { productAction } from '../../store';
 
 export const useFetchApi = () => {
   const dispatch = useDispatch();
+  // const [data, setData] = useState('')
 
   useEffect(() => {
     const fetchApi = async () => {

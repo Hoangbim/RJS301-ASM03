@@ -2,13 +2,15 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { userAction } from '../../store';
+import { cartAction, userAction } from '../../store';
 
 function NavBar() {
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const currentUser = useSelector((state) => state.cart.email);
   const dispatch = useDispatch();
   const logOut = () => {
-    dispatch(userAction.setCurrentUser(''));
+    //xoá thông tin người dùng hiện tại
+    dispatch(cartAction.resetCart());
+    //
   };
   return (
     <NavbarWraper>

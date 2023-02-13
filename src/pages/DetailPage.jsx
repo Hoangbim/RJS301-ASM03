@@ -1,27 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import ProductsItem from "../components/contents/ProductsItem";
-import Footer from "../components/layout/Footer";
-import NavBar from "../components/layout/NavBar";
-import { cartAction, modalAction } from "../store";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ProductsItem from '../components/contents/ProductsItem';
+import Footer from '../components/layout/Footer';
+import NavBar from '../components/layout/NavBar';
+import { cartAction, modalAction } from '../store';
 
 function DetailPage() {
-  //đặt giá trị trang hiện tại
   const dispatch = useDispatch();
+
+  //đặt giá trị trang hiện tại
   useEffect(() => {
     dispatch(modalAction.setShopPage());
   }, [dispatch]);
+
   //nhận giá trị product hiện tại
   const currentProduct = useSelector((state) => state.product.currentProduct);
 
-  //nếu để state này điều khiển việc hiển thị của ảnh zoomed thì khi click vào sản phẩm ở related ảnh sẽ không thay đổi!!!! cho nên thử đưa biêns này vào store, và khi setCurrentProduct cũng set lại luôn biến này !!
-  const [zoomedImage, setZoomedImage] = useState("");
+  const [zoomedImage, setZoomedImage] = useState('');
   //đặt giá trị zoomedImage khi current product thay đổi
   useEffect(() => {
     setZoomedImage(currentProduct.img1);
   }, [currentProduct]);
-  const [count, setCount] = useState(1);
+
+  //biến lưu trữ số lượng sản phẩm
+  const [productCount, setproductCount] = useState(1);
+
+  //lấy thông tin của toàn bộ sản phẩm trên store
   const products = useSelector((state) => state.product.initProducts);
   const carts = useSelector((state) => state.cart.carts);
   const filtedProducts = products.filter(
@@ -34,35 +39,82 @@ function DetailPage() {
 
   //reset lại số lượng sản phẩm
   const resetQuantity = (e) => {
-    console.log("product", e.target.id);
+    console.log('product', e.target.id);
     if (e.target.id) {
-      setCount(1);
+      setproductCount(1);
     }
   };
 
+  // giảm product quantity
   const decrement = () => {
-    // setCount(count - 1);
-    setCount((prev) => prev - 1);
+    // setproductCount(count - 1);
+    if (productCount > 1) setproductCount((prev) => prev - 1);
   };
 
+  //tăng product Quantity
   const increment = () => {
-    // setCount(count + 1);
+    // setproductCount(count + 1);
 
-    setCount((prev) => {
+    setproductCount((prev) => {
       return prev + 1;
     });
   };
 
+  ////////////cập nhật usersCart//////////////////////
+  // lấy currentUser
+  const currentUser = useSelector((state) => state.cart);
+
+  // const cartArr = useSelector((state) => state.cart);
+  // useEffect(() => {
+  //   console.log(cartArr);
+  // }, [carts]);
+
+  //thêm state vào redux store
   const addToCart = () => {
     const cart = {
       image: currentProduct.img1,
       name: currentProduct.name,
       price: currentProduct.price,
-      quantity: count,
+      quantity: productCount,
     };
     console.log(cart, carts);
 
+    //cập nhật state cart
     dispatch(cartAction.addToCart(cart));
+
+    ///cập nhật localstorage
+    const userCarts = localStorage.getItem('USERCARTS')
+      ? JSON.parse(localStorage.getItem('USERCARTS'))
+      : [];
+
+    // trường hợp localStorage chưa có thông tin USERCARTS
+    if ((userCarts.length = 0)) {
+      const newUsercart = [
+        {
+          user: currentUser,
+          carts: [
+            {
+              image: currentProduct.img1,
+              name: currentProduct.name,
+              price: currentProduct.price,
+              quantity: productCount,
+            },
+          ],
+        },
+      ];
+
+      localStorage.setItem('USERCARTS', JSON.stringify(newUsercart));
+    }
+
+    //trường hợp trong localstorage đã có thông tin về USERCARTS: update
+
+    userCarts.forEach((userCart) => {
+      if (userCart.user === currentUser) {
+        userCart.carts.push(cart);
+      }
+    });
+
+    localStorage.setItem('USERCARTS', JSON.stringify(userCarts));
   };
 
   return (
@@ -82,22 +134,26 @@ function DetailPage() {
           <div className="infomation">
             <h2>{currentProduct.name}</h2>
             <p className="price">
-              {" "}
-              {currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND
+              {' '}
+              {currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
             </p>
             <p className="short-desc">{currentProduct.short_desc}</p>
             <h4>
               CATEGORY: <span>{currentProduct.category}</span>
             </h4>
-            <div className="add-cart">
-              <p>QUANTITY</p>
-              <p>
-                <i class="fa-solid fa-caret-left" onClick={decrement}></i>{" "}
-                {count}{" "}
-                <i class="fa-solid fa-caret-right" onClick={increment}></i>
-              </p>
-              <button onClick={addToCart}>Add to cart</button>
-            </div>
+            {/* hiện thị thông báo khi người dùng chưa đăng nhập */}
+            {currentUser && (
+              <div className="add-cart">
+                <p>QUANTITY</p>
+                <p>
+                  <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
+                  {productCount}{' '}
+                  <i class="fa-solid fa-caret-right" onClick={increment}></i>
+                </p>
+                <button onClick={addToCart}>Add to cart</button>
+              </div>
+            )}
+            {!currentUser && <p> Bạn cần đăng nhập để tiếp tục</p>}
           </div>
         </div>
         <div className="product-description">
@@ -125,7 +181,7 @@ function DetailPage() {
                   price={item.price}
                 />
               ))
-            : ""}
+            : ''}
         </div>
       </ProductDetailWrapper>
       <Footer />

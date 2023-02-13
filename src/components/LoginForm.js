@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { userAction } from "../store";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { cartAction, userAction } from '../store';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [isRegister, setIsRegister] = useState("");
+  const [isRegister, setIsRegister] = useState('');
   const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
   //validate thông tin đầu vào
   const validateInputs = (name, value) => {
     switch (name) {
-      case "email":
+      case 'email':
         setErrors({
           ...errors,
           email:
-            !value.includes("@") || !value.includes(".")
-              ? "Email không hợp lệ"
-              : "",
+            !value.includes('@') || !value.includes('.')
+              ? 'Email không hợp lệ'
+              : '',
         });
         break;
-      case "password":
+      case 'password':
         setErrors({
           ...errors,
-          password: value.length < 8 ? "Mật khẩu phải có ít nhất 8 ký tự" : "",
+          password: value.length < 8 ? 'Mật khẩu phải có ít nhất 8 ký tự' : '',
         });
         break;
       default:
@@ -45,7 +45,7 @@ const LoginForm = () => {
   //xử lý dữ liệu input
   const handleChange = (e) => {
     // đặt giá trị isRegister về '';
-    setIsRegister("");
+    setIsRegister('');
     const { name, value } = e.target;
     validateInputs(name, value);
     console.log(e.target, name, value);
@@ -55,8 +55,8 @@ const LoginForm = () => {
     });
     //kiểm tra form hợp lệ
     if (
-      Object.values(errors).every((err) => err === "") &&
-      Object.values(inputs).every((inp) => inp !== "")
+      Object.values(errors).every((err) => err === '') &&
+      Object.values(inputs).every((inp) => inp !== '')
     ) {
       setFormIsValid(() => true);
     } else {
@@ -69,26 +69,30 @@ const LoginForm = () => {
     //ngăn mặc định
     e.preventDefault();
 
-    //kiểm tra người dùng đã đăng ký hay chưa
-    //lấy thông tin người dùng
-    const userArr = JSON.parse(localStorage.getItem("USERARR") || []);
+    /////kiểm tra người dùng đã đăng ký hay chưa
+    //lấy userarr từ localstorage
+    // const userArr = JSON.parse(localStorage.getItem('USERARR') || []);
+
+    const userArr = localStorage.getItem('USERARR')
+      ? JSON.parse(localStorage.getItem('USERARR'))
+      : [];
+
     let isExist = false;
-    if (userArr) {
-      userArr.forEach((user) => {
-        if (inputs.email === user.email) isExist = true;
-      });
-    }
+    //cập nhật người dùng hiện tại
+    userArr.forEach((user) => {
+      if (inputs.email === user.email) {
+        isExist = true;
+        console.log(user);
+        // dispatch(userAction.setCurrentUser(user));
+        dispatch(cartAction.updateCurrentUserCart(user));
+      }
+    });
 
     if (isExist) {
-      //lưu người dùng hiện tại vào store
-      dispatch(userAction.setCurrentUser(inputs.email));
-
-      //lưu người dùng hiện tại vào localStorage
-      localStorage.setItem("CURRENTUSER", JSON.stringify(inputs.email));
-      //chuyển hướng sang shoppage
-      navigate("/shop", { replace: false });
+      //chuyển hướng sang shopage
+      navigate('/shop', { replace: false });
     } else {
-      setIsRegister("Email hoặc password không chính xác!");
+      setIsRegister('Email hoặc password không chính xác!');
     }
   };
 

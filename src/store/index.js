@@ -18,8 +18,10 @@ const initialUser = {
 };
 
 const initialCartsArr = {
-  user: 'hoang',
-
+  email: '',
+  phone: '',
+  fullName: '',
+  password: '',
   carts: [],
 };
 
@@ -41,8 +43,13 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: initialCartsArr,
   reducers: {
-    updateCurrentUser(state, actions) {
-      state.user = actions.payload;
+    updateCurrentUserCart(state, actions) {
+      const currentUser = actions.payload;
+      state.carts = currentUser.carts;
+      state.email = currentUser.email;
+      state.fullName = currentUser.fullName;
+      state.password = currentUser.password;
+      state.phone = currentUser.phone;
     },
 
     addToCart(state, actions) {
@@ -53,26 +60,6 @@ const cartSlice = createSlice({
         );
         state.carts = [...state.carts, actions.payload];
       } else {
-        // // console.log('carts đã có sản phẩm');
-        // let check = false;
-        // //nếu sản phẩm đã có trong giỏ hàng thì tăng số lượng
-        // state.carts.forEach((item, i) => {
-        //   if (item.name === actions.payload.name) {
-        //     check = true;
-        //     console.log('trong giỏ hàng có sản phẩm trùng, thêm số lượng');
-        //     state.carts[i].quantity += actions.payload.quantity;
-        //   }
-        // });
-
-        // //nếu chưa có sản phẩm hiện tại trong giỏ hàng thì thêm vào giỏ
-        // if (!check) {
-        //   console.log('trong giỏ hàng không có sản phẩm trùng');
-        //   // state.carts.push(actions.payload);
-
-        //   console.log(state.carts);
-        //   state.carts = [...state.carts, actions.payload];
-        // }
-
         let check = false;
         for (let i = 0; i < state.carts.length; i++) {
           if (state.carts[i].name === actions.payload.name) {
@@ -88,7 +75,8 @@ const cartSlice = createSlice({
 
     //tăng số lượng sản phẩm, payload truyền vào là name của products
     increaseQuantity(state, actions) {
-      state.carts[actions.payload].quantity++;
+      // state.carts[actions.payload].quantity++;
+      state.carts = [...state.carts, state.carts[actions.payload].quantity++];
     },
 
     //giảm số lượng sản phẩm, payload truyền vào là name, nếu số lượng hiện tại =1 thì không thực hiện hành động gì
@@ -104,6 +92,15 @@ const cartSlice = createSlice({
         (item, i) => item.name !== actions.payload
       );
       state.carts = newCarts;
+    },
+
+    //reset cart
+    resetCart(state) {
+      state.carts = '';
+      state.email = '';
+      state.fullName = '';
+      state.password = '';
+      state.phone = '';
     },
   },
 });
