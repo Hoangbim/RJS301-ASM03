@@ -1,9 +1,11 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import ProductsItem from "../contents/ProductsItem";
+import { render } from '@testing-library/react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { productAction } from '../../store';
+import ProductsItem from '../contents/ProductsItem';
 
-import Popup from "../PopUp";
+import Popup from '../PopUp';
 
 const ProductsList = ({ className }) => {
   //lấy các gía trị từ store
@@ -11,15 +13,33 @@ const ProductsList = ({ className }) => {
   const isInit = useSelector((state) => state.product.isInit);
   const products = useSelector((state) => state.product.initProducts);
   const filterProducts = useSelector((state) => state.product.filterProducts);
+  const dispatch = useDispatch();
 
+  const [searchName, setSearchName] = useState('');
   //tạo biến nhận giá trị của list product, khi khởi chạy thì biến có giá trị là tất cả các products.
   const renderProducts = isInit ? products : filterProducts;
+
+  //hàm search theo tên
+  const searchByname = (e) => {
+    setSearchName(e.target.value);
+    //lọc sản phẩm thoả mãn yêu cầu
+    const seachProduct = products.filter((product) =>
+      product.name.toLowerCase().includes(e.target.value)
+    );
+    //cập nhật state trong store
+    dispatch(productAction.setFilterProduct(seachProduct));
+  };
 
   return (
     <div className={className}>
       {isShow ? <Popup /> : null}
-      <div>
-        <input type="text" placeholder="Enter Search Here" />
+      <div className="flex space-between search-sort">
+        <input
+          type="text"
+          placeholder="Enter Search Here"
+          onChange={searchByname}
+          value={searchName}
+        />
         <select name="" id="">
           <option value="">Default sorting</option>
         </select>
@@ -36,16 +56,22 @@ const ProductsList = ({ className }) => {
                 price={item.price}
               />
             ))
-          : ""}
+          : ''}
       </div>
 
-      <div className="page-button">
-        <p className="back-button">
-          <i className="fa-solid fa-caret-left"></i>
-        </p>
-        <p>1</p>
-        <p className="forward-button">
-          <i className="fa-solid fa-caret-right"></i>
+      <div className="page-button flex column">
+        <div className="flex buttons">
+          <div className=" button">
+            <i class="fa-solid fa-angles-left"></i>
+          </div>
+          <p className="page">1</p>
+          <div className="button">
+            <i class="fa-solid fa-angles-right"></i>
+          </div>
+        </div>
+
+        <p>
+          Showing {renderProducts.length} of {renderProducts.length} results
         </p>
       </div>
     </div>
@@ -53,23 +79,48 @@ const ProductsList = ({ className }) => {
 };
 
 const ProductsListWrapper = styled(ProductsList)`
-  //   display: flex;
-  //   flex-direction: column;
   width: 75%;
+  margin-bottom: 30px;
+
+  .search-sort {
+    input {
+      height: 30px;
+      padding: 15px;
+    }
+    select {
+      border-radius: 5px;
+      width: 20%;
+      height: 20px;
+    }
+  }
 
   .products {
     display: flex;
-    // justify-content: space-between;
     flex-wrap: wrap;
     gap: 20px;
   }
   .page-button {
-    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+  }
+  .buttons {
     justify-content: flex-end;
   }
-  .back-button {
+  .page {
     width: 40px;
-    height: 30px;
+    height: 27px;
+    text-align: center;
+    background-color: var(--color-footer_background);
+    color: aliceblue;
+  }
+  .button {
+    width: 40px;
+    height: 27px;
+    border: solid 1px black;
+  }
+  i {
+    margin: auto 13px;
+    transform: scale(1.5);
   }
 `;
 

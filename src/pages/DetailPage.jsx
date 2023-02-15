@@ -77,12 +77,11 @@ function DetailPage() {
       price: currentProduct.price,
       quantity: productCount,
     };
-    console.log(cart, carts);
 
     //cập nhật state cart
     dispatch(cartAction.addToCart(cart));
 
-    ///cập nhật localstorage
+    ///////cập nhật localstorage///////
     const userCarts = localStorage.getItem('USERCARTS')
       ? JSON.parse(localStorage.getItem('USERCARTS'))
       : [];
@@ -144,12 +143,14 @@ function DetailPage() {
             {/* hiện thị thông báo khi người dùng chưa đăng nhập */}
             {currentUser && (
               <div className="add-cart">
-                <p>QUANTITY</p>
-                <p>
-                  <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
-                  {productCount}{' '}
-                  <i class="fa-solid fa-caret-right" onClick={increment}></i>
-                </p>
+                <div className="flex quantity-change space-between">
+                  <p>QUANTITY</p>
+                  <p>
+                    <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
+                    {productCount}{' '}
+                    <i class="fa-solid fa-caret-right" onClick={increment}></i>
+                  </p>
+                </div>
                 <button onClick={addToCart}>Add to cart</button>
               </div>
             )}
@@ -245,10 +246,19 @@ const ProductDetailWrapper = styled.div`
 
   .add-cart {
     display: flex;
-    width: 40%;
-    // justify-content: space-between;
-    input {
-      width: 40px;
+    height: 30px;
+    width: 50%;
+    justify-content: space-between;
+
+    button {
+      width: 40%;
+      color: aliceblue;
+      background-color: var(--color-footer_background);
     }
+  }
+  .quantity-change {
+    width: 60%;
+    border: solid 1px black;
+    padding: 0 5px;
   }
 `;

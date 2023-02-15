@@ -45,6 +45,7 @@ const cartSlice = createSlice({
   reducers: {
     updateCurrentUserCart(state, actions) {
       const currentUser = actions.payload;
+
       state.carts = currentUser.carts;
       state.email = currentUser.email;
       state.fullName = currentUser.fullName;
@@ -76,7 +77,7 @@ const cartSlice = createSlice({
     //tăng số lượng sản phẩm, payload truyền vào là name của products
     increaseQuantity(state, actions) {
       // state.carts[actions.payload].quantity++;
-      state.carts = [...state.carts, state.carts[actions.payload].quantity++];
+      state.carts[actions.payload].quantity++;
     },
 
     //giảm số lượng sản phẩm, payload truyền vào là name, nếu số lượng hiện tại =1 thì không thực hiện hành động gì
@@ -96,6 +97,7 @@ const cartSlice = createSlice({
 
     //reset cart
     resetCart(state) {
+      // state = actions.payload;
       state.carts = '';
       state.email = '';
       state.fullName = '';

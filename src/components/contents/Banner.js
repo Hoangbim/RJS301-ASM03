@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function Banner() {
   return (
@@ -58,9 +58,9 @@ const BannerWrapper = styled.div`
     background-color: var(--color-footer_background);
     color: var(--color-background);
     width: 60%;
-    height: 30px;
+    height: 40px;
     text-align: center;
-    padding-top: 5%;
+    padding-top: 3%;
     font-size: 13px;
   }
 `;

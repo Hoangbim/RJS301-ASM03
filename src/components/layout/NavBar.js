@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { cartAction, userAction } from '../../store';
 
 function NavBar() {
-  const currentUser = useSelector((state) => state.cart.email);
+  const currentUser = useSelector((state) => state.cart.fullName);
   const dispatch = useDispatch();
   const logOut = () => {
     //xoá thông tin người dùng hiện tại
@@ -15,7 +15,7 @@ function NavBar() {
   return (
     <NavbarWraper>
       <div className="navbar-container">
-        <div className="buttons right">
+        <div className="buttons right flex">
           <NavLink
             to="/"
             className={(navData) => {
@@ -35,15 +35,15 @@ function NavBar() {
           </NavLink>
         </div>
         <h2 className="">BOUTIQUE</h2>
-        <div className="buttons right">
+        <div className="buttons right flex">
           <Link to="/cart">
             <i className="fa-solid fa-cart-shopping"></i> Cart{' '}
           </Link>
 
           {currentUser && (
-            <p>
-              <i className="fa-solid fa-user"></i>
-              {currentUser} <span onClick={logOut}>(Log out)</span>
+            <p className="user-name">
+              <i className="fa-solid fa-user"></i> {currentUser}{' '}
+              <span onClick={logOut}>(Log out)</span>
             </p>
           )}
           {!currentUser && (
@@ -60,12 +60,6 @@ function NavBar() {
 export default NavBar;
 
 const NavbarWraper = styled.div`
-  //   position: fixed;
-  //   top: 5px;
-  //   left: 50%;
-  //   width: 996px;
-  //   margin-left: -498px;
-
   .navbar-container {
     max-width: 996px;
     color: var(--color-footer_background);
@@ -80,7 +74,7 @@ const NavbarWraper = styled.div`
   a {
     text-decoration: none;
     padding: 10px;
-    margin-top: 20px;
+    // margin-top: 20px;
     color: var(--color-footer_background);
   }
 
@@ -90,5 +84,11 @@ const NavbarWraper = styled.div`
 
   .active {
     color: #fcbc6d;
+  }
+  .user-name {
+    margin-top: 10px;
+  }
+  h2 {
+    padding-top: 10px;
   }
 `;

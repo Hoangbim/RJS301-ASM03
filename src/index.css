@@ -26,3 +26,12 @@ code {
   --color-content_background: #ffdeb4;
   --fontsize-blur_title: 13px;
 }
+.flex {
+  display: flex;
+}
+.space-between {
+  justify-content: space-between;
+}
+.column {
+  flex-direction: column;
+}
