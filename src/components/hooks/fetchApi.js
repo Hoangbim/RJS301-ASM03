@@ -15,7 +15,6 @@ export const useFetchApi = () => {
         const data = await res.json();
 
         dispatch(productAction.setInit(data));
-        console.log(data);
       } catch (error) {
         dispatch(productAction.setInit([]));
       }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { cartAction } from '../../store';
@@ -8,7 +8,7 @@ function CartContent() {
   const carts = useSelector((state) => state.cart.carts);
   const dispatch = useDispatch();
   const userCart = useSelector((state) => state.cart.carts);
-
+  console.log(userCart);
   let subtotal = 0;
   for (let i = 0; i < carts.length; i++) {
     subtotal = subtotal + carts[i].price * carts[i].quantity;
@@ -43,101 +43,103 @@ function CartContent() {
     // dispatch(cartAction.decreaseQuantity(name));
   };
   return (
-    <CartContentWrapper>
-      <div className="cart-header">
-        <h1>CART</h1>
-        <h3>CART</h3>
-      </div>
-      <h2>SHOPPING CART</h2>
-      <div className="cart-detail">
-        <div className="cart-detail__left">
-          <table>
-            <tr className="table-head">
-              <th className="col-1">IMAGE</th>
-              <th className="col-2">PRODUCT</th>
-              <th className="col-1"> PRICE</th>
-              <th className="col-1">QUANTITY</th>
-              <th className="col-1">TOTAL</th>
-              <th className="col-1">REMOVE</th>
-            </tr>
-            {userCart.map((product, i) => (
-              <tr key={i}>
-                <td className="col-1">
-                  <img src={product.image} alt="product-img" />
-                </td>
-                <td className="col-2">{product.name}</td>
-                <td className="col-1">
-                  {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
-                </td>
-                <td className="col-1">
-                  <i
-                    className="fa-solid fa-caret-left"
-                    onClick={decrement}
-                    data-name={product.name}
-                  >
-                    {' '}
-                  </i>
-                  {'   '}
-                  {product.quantity}
-                  {'  '}
-                  <i
-                    className="fa-solid fa-caret-right"
-                    onClick={increment}
-                    data-name={product.name}
-                  ></i>
-                </td>
-                <td className="col-1">
-                  {(product.price * product.quantity)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                  VND
-                </td>
-                <td className="col-1">
-                  <i
-                    className="fa-solid fa-trash"
-                    data-name={product.name}
-                    onClick={deleteProduct}
-                  ></i>
-                </td>
+    <Fragment>
+      <CartContentWrapper>
+        <div className="cart-header">
+          <h1>CART</h1>
+          <h3>CART</h3>
+        </div>
+        <h2>SHOPPING CART</h2>
+        <div className="cart-detail">
+          <div className="cart-detail__left">
+            <table>
+              <tr className="table-head">
+                <th className="col-1">IMAGE</th>
+                <th className="col-2">PRODUCT</th>
+                <th className="col-1"> PRICE</th>
+                <th className="col-1">QUANTITY</th>
+                <th className="col-1">TOTAL</th>
+                <th className="col-1">REMOVE</th>
               </tr>
-            ))}
-          </table>
-          <div className="page-navigate">
-            <Link to="/shop" className="nav-button">
-              <i className="fa-sharp fa-solid fa-arrow-left"></i>
-              <p>Continue shopping</p>
-            </Link>
+              {userCart.map((product, i) => (
+                <tr key={i}>
+                  <td className="col-1">
+                    <img src={product.image} alt="product-img" />
+                  </td>
+                  <td className="col-2">{product.name}</td>
+                  <td className="col-1">
+                    {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+                  </td>
+                  <td className="col-1">
+                    <i
+                      className="fa-solid fa-caret-left"
+                      onClick={decrement}
+                      data-name={product.name}
+                    >
+                      {' '}
+                    </i>
+                    {'   '}
+                    {product.quantity}
+                    {'  '}
+                    <i
+                      className="fa-solid fa-caret-right"
+                      onClick={increment}
+                      data-name={product.name}
+                    ></i>
+                  </td>
+                  <td className="col-1">
+                    {(product.price * product.quantity)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                    VND
+                  </td>
+                  <td className="col-1">
+                    <i
+                      className="fa-solid fa-trash"
+                      data-name={product.name}
+                      onClick={deleteProduct}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </table>
+            <div className="page-navigate">
+              <Link to="/shop" className="nav-button">
+                <i className="fa-sharp fa-solid fa-arrow-left"></i>
+                <p>Continue shopping</p>
+              </Link>
 
-            <Link to="/checkout" className="nav-button">
-              Proceed to check out
-              {'  '}
-              <i className="fa-sharp fa-solid fa-arrow-right"></i>
-            </Link>
+              <Link to="/checkout" className="nav-button">
+                Proceed to check out
+                {'  '}
+                <i className="fa-sharp fa-solid fa-arrow-right"></i>
+              </Link>
+            </div>
+          </div>
+          <div className="cart-detail__right">
+            <h3>CART TOTAL</h3>
+            <div className="subtotal">
+              <p>SUBTOTAL</p>
+              <p>
+                {subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+              </p>
+            </div>
+            <div className="subtotal">
+              <p>TOTAL</p>
+              <p>
+                {subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+              </p>
+            </div>
+            <div className="coupon">
+              <input type="text" placeholder="Enter your coupon" />
+              <button>
+                <i className="fa-solid fa-gift"></i> {'  '} Apply coupon
+              </button>
+            </div>
           </div>
         </div>
-        <div className="cart-detail__right">
-          <h3>CART TOTAL</h3>
-          <div className="subtotal">
-            <p>SUBTOTAL</p>
-            <p>
-              {subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
-            </p>
-          </div>
-          <div className="subtotal">
-            <p>TOTAL</p>
-            <p>
-              {subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
-            </p>
-          </div>
-          <div className="coupon">
-            <input type="text" placeholder="Enter your coupon" />
-            <button>
-              <i className="fa-solid fa-gift"></i> {'  '} Apply coupon
-            </button>
-          </div>
-        </div>
-      </div>
-    </CartContentWrapper>
+      </CartContentWrapper>
+    </Fragment>
   );
 }
 
@@ -145,8 +147,12 @@ export default CartContent;
 
 const CartContentWrapper = styled.div`
   max-width: 1250px;
+  min-height: 730px;
   margin: 0 auto;
   text-align: left;
+  // .message {
+  //   height: 500px;
+  // }
   .cart-header {
     width: 1250px;
     height: 200px;
@@ -172,6 +178,7 @@ const CartContentWrapper = styled.div`
   table {
     border-collapse: collapse;
     text-align: center;
+    width: 100%;
   }
   tr {
     height: 60px;

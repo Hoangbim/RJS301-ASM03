@@ -66,13 +66,8 @@ const LoginForm = () => {
 
   //submit dữ liệu
   const handleSubmit = (e) => {
-    //ngăn mặc định
     e.preventDefault();
-
-    /////kiểm tra người dùng đã đăng ký hay chưa
-    //lấy userarr từ localstorage
-    // const userArr = JSON.parse(localStorage.getItem('USERARR') || []);
-
+    //lấy data người dùng từ localStorage
     const userArr = localStorage.getItem('USERARR')
       ? JSON.parse(localStorage.getItem('USERARR'))
       : [];
@@ -85,6 +80,10 @@ const LoginForm = () => {
         console.log(user);
         // dispatch(userAction.setCurrentUser(user));
         dispatch(cartAction.updateCurrentUserCart(user));
+
+        console.log('Cập nhật  currentUser vào localstorage!');
+        //lưu người dùng hiện tại vào localStorage
+        localStorage.setItem('CURRENTUSER', JSON.stringify(user));
       }
     });
 
@@ -98,7 +97,6 @@ const LoginForm = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit}>
-      {/* <label>Email</label> */}
       <input
         type="text"
         placeholder="Email"
@@ -107,7 +105,6 @@ const LoginForm = () => {
         onChange={handleChange}
       />
       {errors.email && <p className="error">{errors.email}</p>}
-      {/* <label>Mật khẩu</label> */}
       <input
         type="password"
         placeholder="Password"
@@ -132,7 +129,7 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 auto;
+  margin: 80px auto;
   input {
     height: 50px;
     padding-left: 20px;

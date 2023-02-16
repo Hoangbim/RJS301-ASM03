@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -120,7 +120,7 @@ const ProductsListWrapper = styled(ProductsList)`
   }
   i {
     margin: auto 13px;
-    transform: scale(1.5);
+    transform: scale(1.1);
   }
 `;
 

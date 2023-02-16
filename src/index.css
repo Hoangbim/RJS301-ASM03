@@ -25,6 +25,7 @@ code {
   --color-footer_background: rgb(17, 17, 17);
   --color-content_background: #ffdeb4;
   --fontsize-blur_title: 13px;
+  --color-messenger: #3187e9;
 }
 .flex {
   display: flex;

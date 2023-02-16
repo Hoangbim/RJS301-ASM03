@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import ProductsItem from '../components/contents/ProductsItem';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import { cartAction, modalAction } from '../store';
+import { cartAction, modalAction, productAction } from '../store';
 
 function DetailPage() {
   const dispatch = useDispatch();
+
+  const [isShowAddCartMess, setIsShowAddCartMess] = useState(false);
 
   //đặt giá trị trang hiện tại
   useEffect(() => {
@@ -16,6 +18,14 @@ function DetailPage() {
 
   //nhận giá trị product hiện tại
   const currentProduct = useSelector((state) => state.product.currentProduct);
+
+  ///tạo biến nhận ảnh của sản phẩm hiện tại
+  let images = [];
+  for (const key in currentProduct) {
+    if (key.includes('img')) {
+      images.push(currentProduct[key]);
+    }
+  }
 
   const [zoomedImage, setZoomedImage] = useState('');
   //đặt giá trị zoomedImage khi current product thay đổi
@@ -28,7 +38,6 @@ function DetailPage() {
 
   //lấy thông tin của toàn bộ sản phẩm trên store
   const products = useSelector((state) => state.product.initProducts);
-  const carts = useSelector((state) => state.cart.carts);
   const filtedProducts = products.filter(
     (item) => item.category === currentProduct.category
   );
@@ -39,7 +48,6 @@ function DetailPage() {
 
   //reset lại số lượng sản phẩm
   const resetQuantity = (e) => {
-    console.log('product', e.target.id);
     if (e.target.id) {
       setproductCount(1);
     }
@@ -64,11 +72,6 @@ function DetailPage() {
   // lấy currentUser
   const currentUser = useSelector((state) => state.cart);
 
-  // const cartArr = useSelector((state) => state.cart);
-  // useEffect(() => {
-  //   console.log(cartArr);
-  // }, [carts]);
-
   //thêm state vào redux store
   const addToCart = () => {
     const cart = {
@@ -81,39 +84,12 @@ function DetailPage() {
     //cập nhật state cart
     dispatch(cartAction.addToCart(cart));
 
-    ///////cập nhật localstorage///////
-    const userCarts = localStorage.getItem('USERCARTS')
-      ? JSON.parse(localStorage.getItem('USERCARTS'))
-      : [];
-
-    // trường hợp localStorage chưa có thông tin USERCARTS
-    if ((userCarts.length = 0)) {
-      const newUsercart = [
-        {
-          user: currentUser,
-          carts: [
-            {
-              image: currentProduct.img1,
-              name: currentProduct.name,
-              price: currentProduct.price,
-              quantity: productCount,
-            },
-          ],
-        },
-      ];
-
-      localStorage.setItem('USERCARTS', JSON.stringify(newUsercart));
-    }
-
-    //trường hợp trong localstorage đã có thông tin về USERCARTS: update
-
-    userCarts.forEach((userCart) => {
-      if (userCart.user === currentUser) {
-        userCart.carts.push(cart);
-      }
-    });
-
-    localStorage.setItem('USERCARTS', JSON.stringify(userCarts));
+    //hiển thị thông báo đã thêm sản phẩm//
+    setIsShowAddCartMess(true);
+    //tắt thông báo
+    setTimeout(() => {
+      setIsShowAddCartMess(false);
+    }, 2000);
   };
 
   return (
@@ -122,10 +98,13 @@ function DetailPage() {
       <ProductDetailWrapper>
         <div className="product-infomation">
           <div className="images">
-            <img src={currentProduct.img1} alt="Iphone" onClick={setImage} />
+            {images.map((url, i) => (
+              <img key={i} src={url} alt="product image" onClick={setImage} />
+            ))}
+            {/* <img src={currentProduct.img1} alt="Iphone" onClick={setImage} />
             <img src={currentProduct.img2} alt="Iphone" onClick={setImage} />
             <img src={currentProduct.img3} alt="Iphone" onClick={setImage} />
-            <img src={currentProduct.img4} alt="Iphone" onClick={setImage} />
+            <img src={currentProduct.img4} alt="Iphone" onClick={setImage} /> */}
           </div>
           <div className="zoomed-image">
             <img src={zoomedImage} alt="" />
@@ -134,27 +113,40 @@ function DetailPage() {
             <h2>{currentProduct.name}</h2>
             <p className="price">
               {' '}
-              {currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+              {currentProduct.price &&
+                currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+              VND
             </p>
             <p className="short-desc">{currentProduct.short_desc}</p>
             <h4>
               CATEGORY: <span>{currentProduct.category}</span>
             </h4>
             {/* hiện thị thông báo khi người dùng chưa đăng nhập */}
-            {currentUser && (
+            {currentUser.email && (
               <div className="add-cart">
                 <div className="flex quantity-change space-between">
                   <p>QUANTITY</p>
                   <p>
-                    <i class="fa-solid fa-caret-left" onClick={decrement}></i>{' '}
+                    <i
+                      className="fa-solid fa-caret-left"
+                      onClick={decrement}
+                    ></i>{' '}
                     {productCount}{' '}
-                    <i class="fa-solid fa-caret-right" onClick={increment}></i>
+                    <i
+                      className="fa-solid fa-caret-right"
+                      onClick={increment}
+                    ></i>
                   </p>
                 </div>
                 <button onClick={addToCart}>Add to cart</button>
               </div>
             )}
-            {!currentUser && <p> Bạn cần đăng nhập để tiếp tục</p>}
+            {isShowAddCartMess && (
+              <p>
+                Đã thêm {productCount} {currentProduct.name} vào giỏ{' '}
+              </p>
+            )}
+            {!currentUser.email && <p> Bạn cần đăng nhập để tiếp tục</p>}
           </div>
         </div>
         <div className="product-description">
@@ -164,14 +156,6 @@ function DetailPage() {
         </div>
         <p>RELATED PRODUCTS</p>
         <div className="related-products" onClick={resetQuantity}>
-          {/* {filtedProducts.map((item) => (
-            <div className="related-item" key={item._id.$oid}>
-              <img src={item.img1} alt="iphone" />
-              <p>{item.name}</p>
-              <p>{item.price}</p>
-            </div>
-          ))} */}
-
           {filtedProducts.length > 0
             ? filtedProducts.map((item) => (
                 <ProductsItem

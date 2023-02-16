@@ -13,8 +13,6 @@ function ProductsItem(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const showProductDetail = (e) => {
-    console.log('Go to detail!', e.target.id);
-
     //khi ở không phải ở shopPage thì hiện thị popUp
     if (!isShopPage) {
       dispatch(modalAction.showDetail());
@@ -42,7 +40,7 @@ function ProductsItem(props) {
           <img src={props.imgUrl} alt="Product" />
         </div>
         <p className="product-name">{props.productName}</p>
-        <p>{props.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</p>
+        <p>{props.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND</p>
       </div>
     </ItemWrapper>
   );
@@ -59,7 +57,7 @@ const ItemWrapper = styled.div`
   margin: 20px 0 0 0;
   
   animation-name: appear;
-  animation-duration: 1.5s;
+  animation-duration: 1s;
   
 
   @keyframes appear {

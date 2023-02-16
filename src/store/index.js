@@ -3,6 +3,7 @@ import { configureStore, createSlice, current } from '@reduxjs/toolkit';
 const initialModalState = {
   isShowDetail: false,
   isShopPage: false,
+  isShowChatPopUp: false,
 };
 
 const initialProductState = {
@@ -12,10 +13,10 @@ const initialProductState = {
   filterProducts: [],
 };
 
-const initialUser = {
-  currentUser: '',
-  userArr: [],
-};
+// const initialUser = {
+//   currentUser: '',
+//   userArr: [],
+// };
 
 const initialCartsArr = {
   email: '',
@@ -25,19 +26,19 @@ const initialCartsArr = {
   carts: [],
 };
 
-const userSLice = createSlice({
-  name: 'user',
-  initialState: initialUser,
-  reducers: {
-    addUser(state, actions) {
-      state.userArr.push(actions.payload);
-    },
+// const userSLice = createSlice({
+//   name: 'user',
+//   initialState: initialUser,
+//   reducers: {
+//     addUser(state, actions) {
+//       state.userArr.push(actions.payload);
+//     },
 
-    setCurrentUser(state, actions) {
-      state.currentUser = actions.payload;
-    },
-  },
-});
+//     setCurrentUser(state, actions) {
+//       state.currentUser = actions.payload;
+//     },
+//   },
+// });
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -45,7 +46,6 @@ const cartSlice = createSlice({
   reducers: {
     updateCurrentUserCart(state, actions) {
       const currentUser = actions.payload;
-
       state.carts = currentUser.carts;
       state.email = currentUser.email;
       state.fullName = currentUser.fullName;
@@ -98,7 +98,7 @@ const cartSlice = createSlice({
     //reset cart
     resetCart(state) {
       // state = actions.payload;
-      state.carts = '';
+      state.carts = [];
       state.email = '';
       state.fullName = '';
       state.password = '';
@@ -148,6 +148,9 @@ const modalSlice = createSlice({
     setHomePage(state) {
       state.isShopPage = false;
     },
+    showHideChatPopUp(state) {
+      state.isShowChatPopUp = !state.isShowChatPopUp;
+    },
   },
 });
 
@@ -156,13 +159,13 @@ const store = configureStore({
     modal: modalSlice.reducer,
     product: productSlice.reducer,
     cart: cartSlice.reducer,
-    user: userSLice.reducer,
+    // user: userSLice.reducer,
   },
 });
 
 export const modalAction = modalSlice.actions;
 export const productAction = productSlice.actions;
 export const cartAction = cartSlice.actions;
-export const userAction = userSLice.actions;
+// export const userAction = userSLice.actions;
 
 export default store;

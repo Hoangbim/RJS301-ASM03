@@ -1,16 +1,28 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { cartAction, userAction } from '../../store';
 
 function NavBar() {
   const currentUser = useSelector((state) => state.cart.fullName);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const logOut = () => {
     //xoá thông tin người dùng hiện tại
     dispatch(cartAction.resetCart());
+
+    ///cập nhật localStorage
+    const resetUser = {
+      carts: [],
+      email: '',
+      fullName: '',
+      password: '',
+      phone: '',
+    };
+    localStorage.setItem('CURRENTUSER', JSON.stringify(resetUser));
     //
+    navigate('/', { replace: false });
   };
   return (
     <NavbarWraper>

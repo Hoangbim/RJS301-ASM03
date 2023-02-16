@@ -9,39 +9,56 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { useFetchApi } from './components/hooks/fetchApi';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-//mk realme c2 : 123123
+import { useDispatch, useSelector } from 'react-redux';
+import ChatIcon from './components/ChatIcon';
+import ChatPopUp from './components/ChatPopUp';
+import { cartAction, productAction } from './store';
 
 function App() {
-  const currentProduct = useSelector((state) => state.product.currentProduct);
+  ////lấy data sản phẩm////
   useFetchApi();
 
+  ////////lấy lại thông tin currentUser từ localStorage/////
+  const dispatch = useDispatch();
+  const currentUser = JSON.parse(localStorage.getItem('CURRENTUSER'));
+  const product = JSON.parse(localStorage.getItem('CURRENTPRODUCT'));
+  const userCart = useSelector((state) => state.cart);
+  const currentProduct = useSelector((state) => state.product.currentProduct);
+  useEffect(() => {
+    dispatch(cartAction.updateCurrentUserCart(currentUser));
+    dispatch(productAction.setCurrent(product));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('CURRENTPRODUCT', JSON.stringify(currentProduct));
+  }, [currentProduct]);
+
+  useEffect(() => {
+    localStorage.setItem('CURRENTUSER', JSON.stringify(userCart));
+  }, [userCart]);
+
+  //////lấy biến điều khiển cửa sổ chat//////
+  const isShowChatPopUp = useSelector((state) => state.modal.isShowChatPopUp);
+
+  /////cập nhật thông tin giỏ hàng của người dùng vào localStorage/////
   const userArr = localStorage.getItem('USERARR')
     ? JSON.parse(localStorage.getItem('USERARR'))
     : [];
-  //lấy giá trị người dùng hiện tại từ store(redux)
-  const currentUser = useSelector((state) => state.cart);
-  ////////////cập nhật thông tin currentuser vào localStorage
 
-  useEffect(() => {
-    console.log('Cập nhật  currentUser vào localstorage!');
-    //lưu người dùng hiện tại vào localStorage
-    localStorage.setItem('CURRENTUSER', JSON.stringify(currentUser));
-  }, [currentUser]);
-
-  //cập nhật thông tin giỏ hàng của người dùng vào localStorage
   useEffect(() => {
     for (let i = 0; i < userArr.length; i++) {
-      if (userArr[i].email === currentUser.email) {
-        userArr[i].carts = currentUser.carts;
+      if (userArr[i].email === userCart.email) {
+        userArr[i].carts = userCart.carts;
 
         localStorage.setItem('USERARR', JSON.stringify(userArr));
       }
     }
-  }, [currentUser.carts]);
+  }, [userCart.carts]);
 
   return (
     <div className="App">
+      <ChatIcon />
+      {isShowChatPopUp && <ChatPopUp />}
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/shop" element={<ShopPage />}></Route>

@@ -18,8 +18,6 @@ function TrendingProducts() {
     if (products.length > 0) trendingProducts.push(products[i]);
   }
 
-  console.log(products, trendingProducts);
-
   return (
     <ProductsWrapper>
       <p>MADE THE HARD WAY</p>
