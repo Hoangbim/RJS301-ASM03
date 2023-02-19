@@ -1,6 +1,6 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import styled from 'styled-components';
+import React from "react";
+import { createPortal } from "react-dom";
+import styled from "styled-components";
 
 function ChatPopUp() {
   return createPortal(
@@ -11,16 +11,16 @@ function ChatPopUp() {
       </div>
       <div className="conversations flex column">
         <div className="flex conversation">
-          <img src="./images/customer.png" alt="chat bot" />
+          <img src="/images/customer.png" alt="chat bot" />
           <p> Xin chào!</p>
         </div>
         <div className="flex conversation">
-          <img src="./images/customer.png" alt="chat bot" />
+          <img src="/images/customer.png" alt="chat bot" />
           <p> Đây là Dummy chat box!</p>
         </div>
       </div>
       <div className="chat-footer flex">
-        <img src="./images/customer.png" alt="" />
+        <img src="/images/customer.png" alt="" />
         <input type="text" placeholder="Enter Message!" />
         <div className="buttons flex space-between">
           <i class="fa-solid fa-paperclip"></i>
@@ -29,7 +29,7 @@ function ChatPopUp() {
         </div>
       </div>
     </ChatPopUpWrapper>,
-    document.getElementById('popup')
+    document.getElementById("popup")
   );
 }
 

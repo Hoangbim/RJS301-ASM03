@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import ProductsItem from '../components/contents/ProductsItem';
-import Footer from '../components/layout/Footer';
-import NavBar from '../components/layout/NavBar';
-import { cartAction, modalAction, productAction } from '../store';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import ProductsItem from "../components/contents/ProductsItem";
+import Footer from "../components/layout/Footer";
+import NavBar from "../components/layout/NavBar";
+import { cartAction, modalAction, productAction } from "../store";
 
 function DetailPage() {
   const dispatch = useDispatch();
-
+  const store = useSelector((state) => state);
+  console.log(store);
   const [isShowAddCartMess, setIsShowAddCartMess] = useState(false);
 
   //đặt giá trị trang hiện tại
@@ -22,12 +23,12 @@ function DetailPage() {
   ///tạo biến nhận ảnh của sản phẩm hiện tại
   let images = [];
   for (const key in currentProduct) {
-    if (key.includes('img')) {
+    if (key.includes("img")) {
       images.push(currentProduct[key]);
     }
   }
 
-  const [zoomedImage, setZoomedImage] = useState('');
+  const [zoomedImage, setZoomedImage] = useState("");
   //đặt giá trị zoomedImage khi current product thay đổi
   useEffect(() => {
     setZoomedImage(currentProduct.img1);
@@ -112,9 +113,9 @@ function DetailPage() {
           <div className="infomation">
             <h2>{currentProduct.name}</h2>
             <p className="price">
-              {' '}
+              {" "}
               {currentProduct.price &&
-                currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                currentProduct.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
               VND
             </p>
             <p className="short-desc">{currentProduct.short_desc}</p>
@@ -130,8 +131,8 @@ function DetailPage() {
                     <i
                       className="fa-solid fa-caret-left"
                       onClick={decrement}
-                    ></i>{' '}
-                    {productCount}{' '}
+                    ></i>{" "}
+                    {productCount}{" "}
                     <i
                       className="fa-solid fa-caret-right"
                       onClick={increment}
@@ -143,7 +144,7 @@ function DetailPage() {
             )}
             {isShowAddCartMess && (
               <p>
-                Đã thêm {productCount} {currentProduct.name} vào giỏ{' '}
+                Đã thêm {productCount} {currentProduct.name} vào giỏ{" "}
               </p>
             )}
             {!currentUser.email && <p> Bạn cần đăng nhập để tiếp tục</p>}
@@ -166,7 +167,7 @@ function DetailPage() {
                   price={item.price}
                 />
               ))
-            : ''}
+            : ""}
         </div>
       </ProductDetailWrapper>
       <Footer />
