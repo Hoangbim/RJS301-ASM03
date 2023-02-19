@@ -1,4 +1,4 @@
-import { configureStore, createSlice, current } from "@reduxjs/toolkit";
+import { configureStore, createSlice, current } from '@reduxjs/toolkit';
 
 const initialModalState = {
   isShowDetail: false,
@@ -11,6 +11,7 @@ const initialProductState = {
   initProducts: [],
   currentProduct: {},
   filterProducts: [],
+  sortValue: 'default',
 };
 
 // const initialUser = {
@@ -19,10 +20,10 @@ const initialProductState = {
 // };
 
 const initialCartsArr = {
-  email: "",
-  phone: "",
-  fullName: "",
-  password: "",
+  email: '',
+  phone: '',
+  fullName: '',
+  password: '',
 
   carts: [],
 };
@@ -42,7 +43,7 @@ const initialCartsArr = {
 // });
 
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState: initialCartsArr,
   reducers: {
     updateCurrentUserCart(state, actions) {
@@ -59,7 +60,7 @@ const cartSlice = createSlice({
     addToCart(state, actions) {
       if (state.carts.length === 0) {
         console.log(
-          "giỏ hàng trống, thêm sản phẩm vào giỏ",
+          'giỏ hàng trống, thêm sản phẩm vào giỏ',
           current(state.carts)
         );
         state.carts = [...state.carts, actions.payload];
@@ -102,16 +103,16 @@ const cartSlice = createSlice({
     resetCart(state) {
       // state = actions.payload;
       state.carts = [];
-      state.email = "";
-      state.fullName = "";
-      state.password = "";
-      state.phone = "";
+      state.email = '';
+      state.fullName = '';
+      state.password = '';
+      state.phone = '';
     },
   },
 });
 
 const productSlice = createSlice({
-  name: "product",
+  name: 'product',
   initialState: initialProductState,
   reducers: {
     shopPageClicked(state) {
@@ -130,20 +131,24 @@ const productSlice = createSlice({
     setFilterProduct(state, actions) {
       state.filterProducts = actions.payload;
     },
+
+    setSortValue(state, actions) {
+      state.sortValue = actions.payload;
+    },
   },
 });
 
 const modalSlice = createSlice({
-  name: "modal",
+  name: 'modal',
   initialState: initialModalState,
   reducers: {
     showDetail(state) {
       state.isShowDetail = true;
-      console.log("show modal");
+      console.log('show modal');
     },
     hideDetail(state) {
       state.isShowDetail = false;
-      console.log("hide modal");
+      console.log('hide modal');
     },
     setShopPage(state) {
       state.isShopPage = true;

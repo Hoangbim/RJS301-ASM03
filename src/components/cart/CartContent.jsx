@@ -53,55 +53,59 @@ function CartContent() {
         <div className="cart-detail">
           <div className="cart-detail__left">
             <table>
-              <tr className="table-head">
-                <th className="col-1">IMAGE</th>
-                <th className="col-2">PRODUCT</th>
-                <th className="col-1"> PRICE</th>
-                <th className="col-1">QUANTITY</th>
-                <th className="col-1">TOTAL</th>
-                <th className="col-1">REMOVE</th>
-              </tr>
-              {userCart.map((product, i) => (
-                <tr key={i}>
-                  <td className="col-1">
-                    <img src={product.image} alt="product-img" />
-                  </td>
-                  <td className="col-2">{product.name}</td>
-                  <td className="col-1">
-                    {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
-                  </td>
-                  <td className="col-1">
-                    <i
-                      className="fa-solid fa-caret-left"
-                      onClick={decrement}
-                      data-name={product.name}
-                    >
-                      {' '}
-                    </i>
-                    {'   '}
-                    {product.quantity}
-                    {'  '}
-                    <i
-                      className="fa-solid fa-caret-right"
-                      onClick={increment}
-                      data-name={product.name}
-                    ></i>
-                  </td>
-                  <td className="col-1">
-                    {(product.price * product.quantity)
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-                    VND
-                  </td>
-                  <td className="col-1">
-                    <i
-                      className="fa-solid fa-trash"
-                      data-name={product.name}
-                      onClick={deleteProduct}
-                    ></i>
-                  </td>
+              <thead>
+                <tr className="table-head">
+                  <th className="col-1">IMAGE</th>
+                  <th className="col-2">PRODUCT</th>
+                  <th className="col-1"> PRICE</th>
+                  <th className="col-1">QUANTITY</th>
+                  <th className="col-1">TOTAL</th>
+                  <th className="col-1">REMOVE</th>
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {userCart.map((product, i) => (
+                  <tr key={i}>
+                    <td className="col-1">
+                      <img src={product.image} alt="product-img" />
+                    </td>
+                    <td className="col-2">{product.name}</td>
+                    <td className="col-1">
+                      {product.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} VND
+                    </td>
+                    <td className="col-1">
+                      <i
+                        className="fa-solid fa-caret-left"
+                        onClick={decrement}
+                        data-name={product.name}
+                      >
+                        {' '}
+                      </i>
+                      {'   '}
+                      {product.quantity}
+                      {'  '}
+                      <i
+                        className="fa-solid fa-caret-right"
+                        onClick={increment}
+                        data-name={product.name}
+                      ></i>
+                    </td>
+                    <td className="col-1">
+                      {(product.price * product.quantity)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                      VND
+                    </td>
+                    <td className="col-1">
+                      <i
+                        className="fa-solid fa-trash"
+                        data-name={product.name}
+                        onClick={deleteProduct}
+                      ></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
             <div className="page-navigate">
               <Link to="/shop" className="nav-button">

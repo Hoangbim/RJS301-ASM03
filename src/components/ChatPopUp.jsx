@@ -1,6 +1,6 @@
-import React from "react";
-import { createPortal } from "react-dom";
-import styled from "styled-components";
+import React from 'react';
+import { createPortal } from 'react-dom';
+import styled from 'styled-components';
 
 function ChatPopUp() {
   return createPortal(
@@ -23,13 +23,13 @@ function ChatPopUp() {
         <img src="/images/customer.png" alt="" />
         <input type="text" placeholder="Enter Message!" />
         <div className="buttons flex space-between">
-          <i class="fa-solid fa-paperclip"></i>
-          <i class="fa-solid fa-face-smile-wink"></i>
-          <i class="fa-solid fa-paper-plane send-button"></i>
+          <i className="fa-solid fa-paperclip"></i>
+          <i className="fa-solid fa-face-smile-wink"></i>
+          <i className="fa-solid fa-paper-plane send-button"></i>
         </div>
       </div>
     </ChatPopUpWrapper>,
-    document.getElementById("popup")
+    document.getElementById('popup')
   );
 }
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -15,12 +14,15 @@ const ProductsList = ({ className }) => {
   const filterProducts = useSelector((state) => state.product.filterProducts);
   const dispatch = useDispatch();
 
+  const sortValue = useSelector((state) => state.product.sortValue);
+
   const [searchName, setSearchName] = useState('');
   //tạo biến nhận giá trị của list product, khi khởi chạy thì biến có giá trị là tất cả các products.
   const renderProducts = isInit ? products : filterProducts;
 
   //hàm search theo tên
   const searchByname = (e) => {
+    dispatch(productAction.shopPageClicked());
     setSearchName(e.target.value);
     //lọc sản phẩm thoả mãn yêu cầu
     const seachProduct = products.filter((product) =>
@@ -28,6 +30,21 @@ const ProductsList = ({ className }) => {
     );
     //cập nhật state trong store
     dispatch(productAction.setFilterProduct(seachProduct));
+  };
+
+  const sortProduct = (e) => {
+    const sortProduct = [...renderProducts];
+    dispatch(productAction.shopPageClicked());
+
+    if (e.target.value === 'increment') {
+      sortProduct.sort((a, b) => +a.price - b.price);
+    }
+    if (e.target.value === 'decrement') {
+      sortProduct.sort((a, b) => +b.price - a.price);
+    }
+    //cập nhật state trong store
+    dispatch(productAction.setFilterProduct(sortProduct));
+    dispatch(productAction.setSortValue(e.target.value));
   };
 
   return (
@@ -40,8 +57,10 @@ const ProductsList = ({ className }) => {
           onChange={searchByname}
           value={searchName}
         />
-        <select name="" id="">
-          <option value="">Default sorting</option>
+        <select name="" id="" onChange={sortProduct} value={sortValue}>
+          <option value="default">Default sort</option>
+          <option value="increment">Giá tăng dần</option>
+          <option value="decrement">Giá giảm dần</option>
         </select>
       </div>
 
@@ -62,11 +81,11 @@ const ProductsList = ({ className }) => {
       <div className="page-button flex column">
         <div className="flex buttons">
           <div className=" button">
-            <i class="fa-solid fa-angles-left"></i>
+            <i className="fa-solid fa-angles-left"></i>
           </div>
           <p className="page">1</p>
           <div className="button">
-            <i class="fa-solid fa-angles-right"></i>
+            <i className="fa-solid fa-angles-right"></i>
           </div>
         </div>
 

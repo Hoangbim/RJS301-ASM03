@@ -13,7 +13,10 @@ const CategogiesSideBar = () => {
   const onSelectType = (e) => {
     //biến nhận giá trị của type
     const type = e.target.textContent.toLowerCase();
-    console.log(e.target.classList[0]);
+    // console.log(e.target.classList[0]);
+
+    //đặt giá trị của bộ lọc giá tiền về default
+    dispatch(productAction.setSortValue('default'));
 
     //khoanh vùng event click, ngăn click sang tiêu đề hoặc phần khác gây ra lỗi
     if (e.target.classList[0] === 'row') {

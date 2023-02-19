@@ -11,8 +11,7 @@ function ShopPage() {
     //gửi trạng thái trang hiện tại vào store (shop)
     dispatch(modalAction.setShopPage());
   }, []);
-  const currentPage = useSelector((state) => state.modal.isShopPage);
-  console.log(currentPage);
+
   return (
     <div>
       <NavBar />
