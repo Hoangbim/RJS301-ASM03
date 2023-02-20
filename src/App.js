@@ -25,7 +25,7 @@ function App() {
   const userCart = useSelector((state) => state.cart);
   const currentProduct = useSelector((state) => state.product.currentProduct);
   useEffect(() => {
-    dispatch(cartAction.updateCurrentUserCart(currentUser));
+    currentUser && dispatch(cartAction.updateCurrentUserCart(currentUser));
     dispatch(productAction.setCurrent(product));
   }, []);
 

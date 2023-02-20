@@ -61,6 +61,7 @@ const ProductsWrapper = styled.div`
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 25px;
+    margin: 0 auto;
   }
 `;
