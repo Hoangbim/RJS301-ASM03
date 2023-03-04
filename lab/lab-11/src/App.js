@@ -1,21 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
-import UserFinder from './components/UserFinder';
-import Users from './components/Users';
-import { useState } from 'react';
+import logo from "./logo.svg";
+import "./App.css";
+import UserFinder from "./components/UserFinder";
+import Users from "./components/Users";
+import { useState } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const DUMMY_USER = [
   {
-    id: 'u1',
-    name: 'Max',
+    id: "u1",
+    name: "Max",
   },
   {
-    id: 'u2',
-    name: 'Manuel',
+    id: "u2",
+    name: "Manuel",
   },
   {
-    id: 'u3',
-    name: 'Julie',
+    id: "u3",
+    name: "Julie",
   },
 ];
 
@@ -31,7 +32,9 @@ function App() {
   return (
     <div className="App">
       <UserFinder findName={findName} />
-      <Users users={users} />
+      <ErrorBoundary users={users}>
+        <Users users={users} />
+      </ErrorBoundary>
     </div>
   );
 }

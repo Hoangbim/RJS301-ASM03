@@ -1,11 +1,17 @@
-import React, { Component } from 'react';
-import User from './User';
-import styles from './Users.module.css';
+import React, { Component } from "react";
+import User from "./User";
+import styles from "./Users.module.css";
 
 export class Users extends Component {
   constructor(props) {
     super(props);
     // const users = this.props.users;
+  }
+
+  componentDidUpdate() {
+    if (this.props.users.length === 0) {
+      throw new Error("No user found!");
+    }
   }
 
   render() {
