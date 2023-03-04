@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
 
 function LoginPage() {

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import { modalAction, productAction } from '../store';
+import { modalAction } from '../store';
 import ShopContents from '../components/shop/ShopContents';
 
 function ShopPage() {

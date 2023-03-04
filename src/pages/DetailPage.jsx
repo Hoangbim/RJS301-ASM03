@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import ProductsItem from '../components/contents/ProductsItem';
 import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
-import { cartAction, modalAction, productAction } from '../store';
+import { cartAction, modalAction } from '../store';
 
 function DetailPage() {
   const dispatch = useDispatch();
-  const store = useSelector((state) => state);
 
   const [isShowAddCartMess, setIsShowAddCartMess] = useState(false);
 
@@ -100,7 +99,7 @@ function DetailPage() {
         <div className="product-infomation">
           <div className="images">
             {images.map((url, i) => (
-              <img key={i} src={url} alt="product image" onClick={setImage} />
+              <img key={i} src={url} alt="product" onClick={setImage} />
             ))}
             {/* <img src={currentProduct.img1} alt="Iphone" onClick={setImage} />
             <img src={currentProduct.img2} alt="Iphone" onClick={setImage} />

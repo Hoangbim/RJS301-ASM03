@@ -2,12 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { cartAction, userAction } from '../../store';
+import { cartAction } from '../../store';
 
 function NavBar() {
   const currentUser = useSelector((state) => state.cart.fullName);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const logOut = () => {
     //xoá thông tin người dùng hiện tại
     dispatch(cartAction.resetCart());
@@ -24,6 +25,7 @@ function NavBar() {
     //
     navigate('/', { replace: false });
   };
+
   return (
     <NavbarWraper>
       <div className="navbar-container">
@@ -37,6 +39,7 @@ function NavBar() {
             {' '}
             Home
           </NavLink>
+
           <NavLink
             className={(navData) => {
               return navData.isActive ? 'active' : '';

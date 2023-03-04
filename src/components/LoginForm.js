@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { cartAction, userAction } from '../store';
+import { cartAction } from '../store';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const LoginForm = () => {
     setIsRegister('');
     const { name, value } = e.target;
     validateInputs(name, value);
-    console.log(e.target, name, value);
+    // console.log(e.target, name, value);
     setInputs({
       ...inputs,
       [name]: value,

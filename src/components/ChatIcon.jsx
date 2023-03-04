@@ -1,6 +1,5 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { modalAction } from '../store';
 

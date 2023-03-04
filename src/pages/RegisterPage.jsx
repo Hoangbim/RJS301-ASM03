@@ -3,11 +3,7 @@ import Footer from '../components/layout/Footer';
 import NavBar from '../components/layout/NavBar';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { userAction } from '../store';
 function RegisterPage() {
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     fullName: '',

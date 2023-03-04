@@ -1,14 +1,14 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { cartAction } from '../../store';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function CartContent() {
   const carts = useSelector((state) => state.cart.carts);
   const dispatch = useDispatch();
   const userCart = useSelector((state) => state.cart.carts);
-  console.log(userCart);
+
   let subtotal = 0;
   for (let i = 0; i < carts.length; i++) {
     subtotal = subtotal + carts[i].price * carts[i].quantity;
@@ -25,7 +25,6 @@ function CartContent() {
   const increment = (e) => {
     const { name } = e.target.dataset;
 
-    let productIndex = 0;
     for (let i = 0; i < carts.length; i++) {
       if (carts[i].name === name) {
         dispatch(cartAction.increaseQuantity(i));
