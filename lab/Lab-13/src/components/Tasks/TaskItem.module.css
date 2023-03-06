@@ -3,6 +3,10 @@
   padding: 1rem;
   font-weight: bold;
   font-size: 1.25rem;
+  /* color: aliceblue;
+  width: 80%;
+  margin: 0 auto; */
+  /* text-align: center; */
 }
 
 .task:last-of-type {

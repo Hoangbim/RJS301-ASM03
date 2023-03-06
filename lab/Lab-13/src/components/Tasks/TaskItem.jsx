@@ -1,8 +1,8 @@
-import React from 'react';
-import styles from './TaskItem.module.css';
+import React from "react";
+import styles from "./TaskItem.module.css";
 
-function TaskItem() {
-  return <div className={styles.task}>TaskItem</div>;
+function TaskItem(props) {
+  return <div className={styles.task}>{props.task}</div>;
 }
 
 export default TaskItem;
